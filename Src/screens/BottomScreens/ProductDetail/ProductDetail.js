@@ -1,10 +1,16 @@
 import {
+    Alert,
     Image,
     ImageBackground,
 
+    Modal,
+
     ScrollView,
 
+    TextInput,
+
     TouchableOpacity,
+    TouchableWithoutFeedback,
     View,
 } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
@@ -22,7 +28,7 @@ import Header from '../../../components/Header';
 import { SuccessToast } from '../../../components/SuccessToast';
 import { ErrorToast } from '../../../components/ErrorToast';
 import { AccetReciveOffer, DeleteMadeoffer, clearApolloCache, useCreateCashOfferMutation } from '../../../Graphql/Graphql';
-import { getAddressFromLatLng } from '../../../Apis/Apis';
+import { getAddressFromLatLng, reportAnitem } from '../../../Apis/Apis';
 import { useApolloClient } from '@apollo/react-hooks';
 import Carousel from 'react-native-snap-carousel';
 
@@ -35,10 +41,15 @@ const ProductDetail = props => {
     const [acceptOffer] = AccetReciveOffer();
     const client = useApolloClient();
 
+    const [ReportItem, setReportItem] = useState(false);
 
     const [Location, setLocation] = useState('');
 
-
+    const [ItemRepotDetailModal, setItemRepotDetailModal] = useState(false);
+    const [CounterOfferModal, setCounterOfferModal] = useState(false);
+    const [Detail, setDetail] = useState('');
+    const [title, settitle] = useState('');
+    const [counterOfferValue, setcounterOfferValue] = useState('');
 
     useEffect(() => {
 
@@ -54,6 +65,39 @@ const ProductDetail = props => {
 
 
     }, [])
+
+
+    const reportItemHandle = async () => {
+
+        // 
+
+        if (!title) {
+            Alert.alert('Field Required', 'Please write title of your report');
+        }
+        else if (!Detail) {
+
+            Alert.alert('Field Required', 'Please write detail discreption of your report with reason');
+
+        }
+        else {
+
+            const response = await reportAnitem(previousdata?.targetItem.id, title, Detail)
+            console.log('responseresponseresponse offfffffff report', response);
+            if (response?.data.createItemComplaint) {
+                setDetail(''),
+                settitle('')
+                setItemRepotDetailModal(false)
+                setReportItem(false)
+                SuccessToast({
+                    title: 'Congratulation',
+                    text: `Your complaint has been registered. We're on it and will get back to you soon. Thank you for letting us know!`,
+                });
+            }
+
+
+        }
+
+    }
 
     const handleAcceptMutation = async item => {
 
@@ -71,7 +115,7 @@ const ProductDetail = props => {
                 console.log('resssss handleAcceptMutation;eeeeee', res);
                 SuccessToast({
                     title: 'Congratulation',
-                    text: 'Offer Accepted Successfully 👍',
+                    text: 'Offer Accepted Successfully ',
                 });
 
                 console.log(`Offer with ID ${item.id} Accepted successfully!`);
@@ -96,7 +140,7 @@ const ProductDetail = props => {
                 console.log('resssss de;eeeeee', res);
                 SuccessToast({
                     title: 'Congratulation',
-                    text: 'Offer Deleted Successfully 👍',
+                    text: 'Offer Deleted Successfully',
                 });
 
                 console.log(`Offer with ID ${item.id} deleted successfully!`);
@@ -119,7 +163,7 @@ const ProductDetail = props => {
                 console.log('resssss de;eeeeee', res);
                 SuccessToast({
                     title: 'Congratulation',
-                    text: 'Offer Rejected Successfully 👍',
+                    text: 'Offer Rejected Successfully ',
                 });
 
                 console.log(`Offer with ID ${item.id} Rejected successfully!`);
@@ -132,7 +176,12 @@ const ProductDetail = props => {
     return (
         <Container style={styles.container}>
             <View style={styles.headerView}>
-                <Header title={'Detail'} onPress={() => props.navigation.goBack()} />
+                {props?.route?.params?.from != 'recive' ? <Header title={'Detail'} onPress={() => props.navigation.goBack()}
+
+                    onLefticonPress={() => setReportItem(true)} />
+                    :
+                    <Header title={'Detail'} onPress={() => props.navigation.goBack()} />}
+
 
             </View>
 
@@ -176,6 +225,10 @@ const ProductDetail = props => {
                     <Carousel
 
                         data={swiperData}
+                        enableSnap={true}
+                        activeSlideAlignment={'center'}
+
+                        layout={'stack'} layoutCardOffset={`2`}
                         renderItem={({ item, index }) => (
                             <ImageBackground resizeMode='cover' style={styles.backgroundImg}
                                 source={{ uri: item }}>
@@ -185,6 +238,7 @@ const ProductDetail = props => {
                                 <View style={styles.totalview}>
                                     <ResponsiveText style={styles.totalCount}>
                                         {`${index + 1}/${swiperData?.length}`}
+
                                     </ResponsiveText>
                                 </View>
 
@@ -269,14 +323,23 @@ const ProductDetail = props => {
                         {Location}
                     </ResponsiveText>
                 </View>
+                <Button
+                    title={'Send a Counter Offer'}
+                    onPress={() => setCounterOfferModal(true)}
+                    titleStyle={{}}
+                    btnContainer={{
 
+                        marginTop: hp(3),
+                    }}
+
+                />
 
                 {props?.route?.params?.from == 'made' &&
                     <Button
-                        title={'Delete'}
+                        title={'Delete Offer'}
                         onPress={() => handleMadeDelte(previousdata)}
                         titleStyle={{}}
-                        btnContainer={{ backgroundColor: "red", marginTop: hp(6), }}
+                        btnContainer={{ backgroundColor: "red", marginTop: hp(6), borderColor: 'darkred', }}
 
                     />}
 
@@ -288,6 +351,7 @@ const ProductDetail = props => {
                         btnContainer={{
                             backgroundColor: Colors.secondaryColor, width: wp(45),
                             marginTop: hp(3),
+                            borderColor: Colors.grentext,
                         }}
 
                     />
@@ -297,6 +361,7 @@ const ProductDetail = props => {
                         titleStyle={{}}
                         btnContainer={{
                             backgroundColor: "red",
+                            borderColor: 'darkred',
 
                             marginTop: hp(3),
                             width: wp(45)
@@ -305,7 +370,85 @@ const ProductDetail = props => {
                     />
                 </View>}
 
+
+
             </ScrollView>
+
+
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={ReportItem}
+                onRequestClose={() => {
+                    setReportItem(false);
+                }}>
+                <TouchableWithoutFeedback onPress={() => setReportItem(false)}>
+                    <View style={styles.modalContainer}>
+                        <View style={styles.modalContent}>
+                            <TouchableOpacity
+                                style={styles.modlbtn}
+                                hitSlop={styles.hitslop}
+                                onPress={() => { setItemRepotDetailModal(true), console.log('report userrrrrrr') }}>
+                                <ResponsiveText style={styles.buttonText}>
+                                    Report Item
+                                </ResponsiveText>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity
+                                style={styles.modlbtn}
+                                onPress={() => setReportItem(false)}>
+                                <ResponsiveText style={styles.buttonTextcancel}>
+                                    Cancel
+                                </ResponsiveText>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </TouchableWithoutFeedback>
+            </Modal>
+
+            <CustomModal modalVisible={ItemRepotDetailModal} setModalVisible={setItemRepotDetailModal}>
+                <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                    <TextInput
+                        placeholder="Title of report"
+                        value={title}
+                        onChangeText={text => settitle(text)}
+                        style={styles.input}
+                        placeholderTextColor={Colors.graytext}
+
+                    />
+
+                    <TextInput
+                        placeholder="write detail discreption of your report with reason"
+                        value={Detail}
+                        onChangeText={text => setDetail(text)}
+                        style={[styles.input, { height: 200 }]} // Make the message input taller
+                        multiline={true}
+                        placeholderTextColor={Colors.graytext}
+
+                    />
+                    <Button title="Report this item"
+                        btnContainer={styles.contactUs}
+                        onPress={() => { reportItemHandle() }} />
+                </View>
+            </CustomModal>
+
+
+
+            <CustomModal modalVisible={CounterOfferModal} setModalVisible={setCounterOfferModal}>
+                <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                    <TextInput
+                        placeholder="Enter counter offer $ value"
+                        value={counterOfferValue}
+                        onChangeText={text => setcounterOfferValue(text)}
+                        style={styles.input}
+                        placeholderTextColor={Colors.graytext}
+                    />
+
+                    <Button title="Send a Counter Offer"
+                        btnContainer={styles.contactUs2}
+                        onPress={() => { setCounterOfferModal(false) }} />
+                </View>
+            </CustomModal>
         </Container>
     );
 };

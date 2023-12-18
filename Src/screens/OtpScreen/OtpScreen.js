@@ -62,7 +62,7 @@ const OtpScreen = (props) => {
         console.log('resetresendotpresetresendotpresetresendotp', resetresendotp);
         SuccessToast({
           title: 'Congratulation',
-          text: 'OTP sent Successfully 👍'
+          text: 'OTP sent Successfully '
         })
       } else {
         const resetresponse = await resendOtpregister({
@@ -74,7 +74,7 @@ const OtpScreen = (props) => {
         console.log('signInResponse===>>>>>', resetresponse);
         SuccessToast({
           title: 'Congratulation',
-          text: 'OTP sent Successfully 👍'
+          text: 'OTP sent Successfully '
         })
 
       }

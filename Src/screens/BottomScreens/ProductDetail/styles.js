@@ -19,13 +19,16 @@ export const styles = StyleSheet.create({
         alignItems: 'flex-end',
         marginBottom: hp(2),
         marginHorizontal: wp(3)
+
     },
     totalCount: {
-        backgroundColor: `${Colors.graytext}`,
-        padding: wp(2),
+        backgroundColor: `${Colors.graytext}60`,
+        padding: wp(1.5),
+        paddingHorizontal: wp(3.5),
         fontSize: 16,
-        fontFamily: Fonts.FontsBold,
-        color: Colors.btncolor
+        fontFamily: Fonts.FontssemiBold,
+        color: Colors.btncolor,
+        borderRadius: 4,
     },
     headerText: {
         fontSize: 16,
@@ -163,7 +166,57 @@ export const styles = StyleSheet.create({
         width: wp(96),
         height: hp(50),
 
-    }
+    },
+    input: {
+        width: wp(80),
+        height: 40,
+        borderColor: Colors.btncolor,
+        borderWidth: 1,
+        marginBottom: 10,
+        padding: 10,
+        borderRadius: 10,
+        verticalAlign: 'top',
+        color: Colors.black
+    },
+    contactUs: {
+        marginTop: hp(2),
+        width: wp(45),
+        height: hp(5)
+    },
+
+    contactUs2: {
+        marginTop: hp(2),
+        width: wp(65),
+        height: hp(5)
+    },
+
+    modalContainer: {
+        flex: 1,
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    },
+
+    modalContent: {
+        backgroundColor: 'white',
+        width: wp(100),
+        padding: 20,
+        alignItems: 'flex-start',
+
+    },
+    modlbtn: {
+        width: wp(100),
+        paddingVertical: 10
+    },
+    buttonText: {
+        fontSize: 16,
+        color: 'red',
+
+    },
+    buttonTextcancel: {
+        fontSize: 16,
+        color: Colors.black,
+    },
 
 
 

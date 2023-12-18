@@ -24,13 +24,14 @@ import ImagePicker from 'react-native-image-crop-picker';
 import uploadToS3 from '../../../components/Uploads3File';
 import Geolocation from '@react-native-community/geolocation';
 import { AddnewitemMutation } from '../../../Graphql/Graphql';
-import { apiKey, getAddressFromLatLng } from '../../../Apis/Apis';
+import { apiKey, createItem, getAddressFromLatLng, getCategory } from '../../../Apis/Apis';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { SuccessToast } from '../../../components/SuccessToast';
 import { heightPercentageToDP as hp } from '../../../components/Responsiveui';
 import { useDispatch } from 'react-redux';
 import { Savematchingitem } from '../../../redux/actions/userDataAction';
 import DropdownPinker from '../../../components/DropdownPicker';
+
 
 
 let defaultaray = [
@@ -66,6 +67,7 @@ const categoryData = [
   { label: 'Musical Instruments ', value: '19' },
   { label: 'Handmade Products ', value: '20' },
   { label: 'Video Games', value: '21' },
+  { label: 'Others', value: '22' },
 
 
 
@@ -74,6 +76,7 @@ const Additem = props => {
   const dispatch = useDispatch();
   const [Array, setArray] = useState(defaultaray);
   const [modalVisible, setModalVisible] = useState(false);
+  const [imageUrl, setimageUrl] = useState('');
 
   const onPress = (data, details) => {
     setModalVisible(false);
@@ -110,24 +113,28 @@ const Additem = props => {
   const [Mainimageindex, setMainimageindex] = useState(0);
   const [presIndex, setpresIndex] = useState(0);
   const [SelectimageFormain, setSelectimageFormain] = useState(false);
-  useEffect(() => {
-    const keyboardDidHideListener = Keyboard.addListener(
-      'keyboardDidHide',
-      () => {
-        let findimage = Array.find(item => item.image != '');
-        console.log('findimage', findimage);
-        if (findimage && title && value && Discreption) {
-          uploaditem();
-        }
-      },
-    );
+  const [dropdownData, setDropdownData] = useState([])
 
-    return () => {
-      // Clean up the event listener when the component is unmounted
-      keyboardDidHideListener.remove();
-    };
-  }, []);
+
+
+
+
+
   useEffect(() => {
+    getCategory().then(res => {
+
+      console.log('resoponseeeee', res)
+      let array = []
+      res.data?.categories.map(categry => {
+        console.log('response of categoryyyyy', categry)
+        let object = { label: categry?.name, value: categry?.id }
+        array.push(object)
+      })
+      console.log('arrayarray', array);
+      setDropdownData(array)
+    }).catch(eror => {
+      console.log('eror get category', eror)
+    })
     getCurrentLocation();
   }, []);
   let titlemaxlength = 100;
@@ -142,7 +149,20 @@ const Additem = props => {
     });
   };
 
+  function extractUrlAndRemainingArray(urls, index) {
+    if (index < 0 || index >= urls.length) {
+      return null; // Index out of bounds
+    }
+
+    const selectedUrl = urls[index];
+    const remainingUrls = [...urls.slice(0, index), ...urls.slice(index + 1)].map((url) => (url.toString()));
+    console.log('remainingUrlsremainingUrls', remainingUrls);
+    return { selectedUrl, remainingUrls };
+  }
+
+
   const uploaditem = async () => {
+
     try {
       let findimage = Array.find(item => item.image != '');
       console.log('findimage', findimage);
@@ -152,9 +172,17 @@ const Additem = props => {
         Alert.alert('Field Required', 'Please enter your item title');
       } else if (!value) {
         Alert.alert('Field Required', 'Please enter your item price');
-      } else if (!Discreption) {
+      }
+
+      else if (!Discreption) {
         Alert.alert('Field Required', 'Please enter your item descreption');
-      } else {
+      }
+
+      else if (!category?.value) {
+        Alert.alert('Field Required', 'Please select your item category');
+      }
+
+      else {
         const imageUrls = Array.filter(obj => obj.image !== '').map(
           obj => obj.image,
         );
@@ -165,35 +193,54 @@ const Additem = props => {
           const mainImage = imageUrls.splice(Mainimageindex, 1)[0];
           imageUrls.unshift(mainImage);
         }
+        const result = extractUrlAndRemainingArray(imageUrls, 0);
+        console.log('resultresultresult', result.selectedUrl);
+        console.log('resultresultresultresultresult', result.remainingUrls);
 
-        console.log('after image shiftt', imageUrls);
+
+        let remainingUrls = result.remainingUrls
+        let selectedUrl = result.selectedUrl
 
         setLoading(true);
 
         const trimmedValue = value.slice(1);
-        console.log('valuevaluevalue', trimmedValue);
-        const result = await CreateItem({
-          variables: {
-            item: {
-              askingPrice: parseFloat(trimmedValue),
-              categories: ['Electronics'],
-              description: Discreption,
-              title: title,
-              imageUrls: imageUrls,
-              latitude: Location?.latitude ? Location?.latitude : 73.0,
-              longitude: Location?.longitude ? Location?.longitude : 73.0,
-              isSwapOnly: cashTogle,
-            },
-          },
-        });
-        console.log('resultresultresult', result);
-        setLoading(false);
 
-        if (result.data?.createItem) {
-          dispatch(Savematchingitem(result.data?.createItem));
+        console.log({
+          askingPrice: parseFloat(trimmedValue),
+          categories: [category?.value],
+          description: Discreption,
+          imageUrls: remainingUrls,
+          isSwapOnly: cashTogle,
+          latitude: Location?.latitude ? Location?.latitude : 73.0,
+          longitude: Location?.longitude ? Location?.longitude : 73.0,
+          mainImageUrl: selectedUrl,
+          title: title
+        });
+
+        console.log('valuevaluevalue', trimmedValue);
+
+        let response = await createItem({
+          askingPrice: parseFloat(trimmedValue),
+          categories: [category?.value],
+          description: Discreption,
+          imageUrls: remainingUrls,
+          isSwapOnly: cashTogle,
+          latitude: Location?.latitude ? Location?.latitude : 73.0,
+          longitude: Location?.longitude ? Location?.longitude : 73.0,
+          mainImageUrl: selectedUrl,
+          title: title
+        })
+
+        console.log('responseresponseresponseresponse', response.data?.createItem);
+
+
+        setLoading(false)
+
+        if (response.data?.createItem) {
+          dispatch(Savematchingitem(response.data?.createItem));
           SuccessToast({
             title: 'Congratulation',
-            text: 'Item uploaded Successfully 👍',
+            text: 'Item uploaded Successfully ',
           });
           settitle('');
           setDiscreption('');
@@ -220,25 +267,61 @@ const Additem = props => {
         width: 300,
         height: 300,
         cropping: false,
+        multiple: true,
+        maxFiles: 6,
+        includeBase64: true,
       })
-        .then(image => {
-          const updatedArray = Array.map(obj =>
-            obj.id === selecteditem.id ? { ...obj, loading: true } : obj,
-          );
+        .then((images) => {
+          setImagePickermodal(false);
 
-          setArray(updatedArray);
-          handleuploadimage(image);
+          console.log('Selected images:', images);
+
+          // Create a copy of the default array
+          let updatedArray = [...Array];
+          console.log('updatedArray:', updatedArray);
+
+          // Find the first index with an empty image in updatedArray
+          const startIndex = updatedArray.findIndex((item) => !item.image);
+
+          if (startIndex !== -1) {
+            // Iterate over the selected images and update the array starting from startIndex
+            images.forEach((allimages, index) => {
+              const source = { uri: allimages.data };
+              const updatedIndex = startIndex + index;
+
+              if (updatedIndex < updatedArray.length) {
+                updatedArray[updatedIndex] = {
+                  ...updatedArray[updatedIndex],
+                  image: source.uri,
+                  loading: false,
+                };
+              }
+            });
+
+            // Get the length of the updated array with non-empty images
+            let nonEmptyImageArray = updatedArray.filter((item) => item.image !== '');
+            console.log('nonEmptyImageArray:', nonEmptyImageArray);
+
+            // Set the array state with the updated array
+            setArray(updatedArray);
+
+            // Update the image index based on the length of non-empty images (up to a maximum of 6)
+            setImageindex(Math.min(nonEmptyImageArray.length, 6));
+          }
+
+          console.log('Updated array:', updatedArray);
         })
-        .catch(error => {
-          console.log(error, 'error');
+        .catch((error) => {
+          console.log('Error selecting images:', error);
           setImagePickermodal(false);
         });
     } catch (error) {
       setImagePickermodal(false);
-
-      console.log('errorerror', error);
+      console.log('Error in selecFromgalery:', error);
     }
   };
+
+
 
   const selectFromcamera = item => {
     try {
@@ -247,15 +330,37 @@ const Additem = props => {
         width: 300,
         height: 300,
         cropping: false,
+        includeBase64: true,
+        multiple: true
+
       }).then(image => {
-        console.log(image);
+        console.log('imageimageimageimage', image);
+        setImagePickermodal(false);
+        const source = { uri: image.data };
+        console.log('sourcesourcesource', source);
+        setimageUrl(source)
+
 
         const updatedArray = Array.map(obj =>
-          obj.id === selecteditem.id ? { ...obj, loading: true } : obj,
+          obj.id === selecteditem.id
+            ? { ...obj, image: source.uri || '', loading: false }
+            : obj,
         );
-
         setArray(updatedArray);
-        handleuploadimage(image);
+
+        let nonEmptyImageArray = updatedArray.filter((item) => item.image !== '');
+        console.log('nonEmptyImageArray:', nonEmptyImageArray);
+
+        setImageindex(Math.min(nonEmptyImageArray.length, 6));
+
+
+
+        // const updatedArray = Array.map(obj =>
+        //   obj.id === selecteditem.id ? { ...obj, loading: true } : obj,
+        // );
+
+        // setArray(updatedArray);
+        // handleuploadimage(image);
       });
     } catch (error) {
       console.log('errorerror', error);
@@ -267,6 +372,8 @@ const Additem = props => {
       setImagePickermodal(false);
       // if (findarray.image == '') {
       setImageindex(Imageindex + 1);
+
+
       // }
       const result = await uploadToS3(image);
       console.log('resultresultresult', result);
@@ -312,80 +419,157 @@ const Additem = props => {
     setArray(updatedArray);
   };
 
+  const onDragEnd = ({ data }) => {
+    setArray(data);
+  };
+
+
   const renderItem = ({ item, index }) => {
-    console.log('itemitem', item);
+    console.log('itemitem', item, Imageindex);
     return (
+
       <>
-        {item.loading == true ? (
-          <View style={styles.imageview}>
-            <ActivityIndicator size="large" color={Colors.btncolor} />
-          </View>
-        ) : (
-          <>
-            {index <= Imageindex ? (
-              <TouchableOpacity
-                onPress={() => {
-                  setselecteditem(item), setImagePickermodal(true);
-                  setSelectimageFormain(item.image == '' ? false : true)
-                  setpresIndex(index)
-                }}
-                style={styles.imageAddviewtouchable}>
-                {item.image == '' ? (
-                  <>
-                    <Image source={Images.addphoto} style={styles.addphoto} />
-                    <ResponsiveText style={styles.adphototxt}>
-                      {'Add Photo'}
-                    </ResponsiveText>
-                  </>
-                ) : (
-                  <>
-                    <TouchableOpacity
-                      onPress={() => handleItemRemove(item.id)}
-                      hitSlop={styles.hitslop}
-                      style={styles.crossimage}>
-                      <Image
-                        source={Images.close}
-                        style={styles.closeimg}
-                        resizeMode="cover"
-                      />
-                    </TouchableOpacity>
-                    <Image
-                      source={{ uri: item.image }}
-                      style={{ ...styles.image, borderWidth: index == Mainimageindex ? 2 : 0, borderColor: index == Mainimageindex ? Colors.btncolor : null }}
-                      resizeMode="cover"
-                    />
-                  </>
-                )}
-              </TouchableOpacity>
+        {index <= Imageindex ? (
+          <TouchableOpacity
+            onPress={() => {
+              setselecteditem(item), setImagePickermodal(true);
+              setSelectimageFormain(item.image == '' ? false : true)
+              setpresIndex(index)
+            }}
+            style={styles.imageAddviewtouchable}>
+            {item.image == '' ? (
+              <>
+                <Image source={Images.addphoto} style={styles.addphoto} />
+                <ResponsiveText style={styles.adphototxt}>
+                  {'Add Photo'}
+                </ResponsiveText>
+              </>
             ) : (
-              <View style={{ ...styles.imageview, borderWidth: index == Mainimageindex ? 2 : 0, borderColor: index == Mainimageindex ? Colors.btncolor : null }}>
-                {item.image && (
-                  <>
-                    <TouchableOpacity
-                      onPress={() => handleItemRemove(item.id)}
-                      hitSlop={styles.hitslop}
-                      style={styles.crossimage}>
-                      <Image
-                        source={Images.close}
-                        style={styles.closeimg}
-                        resizeMode="cover"
-                      />
-                    </TouchableOpacity>
-                    <Image
-                      source={{ uri: item.image }}
-                      style={styles.image}
-                      resizeMode="cover"
-                    />
-                  </>
-                )}
-              </View>
+              <>
+                <TouchableOpacity
+                  onPress={() => handleItemRemove(item.id)}
+                  hitSlop={styles.hitslop}
+                  style={styles.crossimage}>
+                  <Image
+                    source={Images.close}
+                    style={styles.closeimg}
+                    resizeMode="cover"
+                  />
+                </TouchableOpacity>
+                <Image
+                  source={{ uri: 'data:image/jpeg;base64,' + item.image }}
+                  style={{ ...styles.image, borderWidth: index == Mainimageindex ? 2 : 0, borderColor: index == Mainimageindex ? Colors.btncolor : null }}
+                  resizeMode="cover"
+                />
+              </>
             )}
-          </>
+          </TouchableOpacity>
+        ) : (
+          <View style={{ ...styles.imageview, borderWidth: index == Mainimageindex ? 2 : 0, borderColor: index == Mainimageindex ? Colors.btncolor : null }}>
+            {item.image && (
+              <>
+                <TouchableOpacity
+                  onPress={() => handleItemRemove(item.id)}
+                  hitSlop={styles.hitslop}
+                  style={styles.crossimage}>
+                  <Image
+                    source={Images.close}
+                    style={styles.closeimg}
+                    resizeMode="cover"
+                  />
+                </TouchableOpacity>
+                <Image
+                  source={{ uri: item.image }}
+                  style={styles.image}
+                  resizeMode="cover"
+                />
+              </>
+            )}
+          </View>
         )}
       </>
+
+
     );
   };
+
+
+
+  // const renderItem = ({ item, index }) => {
+  //   console.log('itemitem', item);
+  //   return (
+  //     <>
+  //       {item.loading == true ? (
+  //         <View style={styles.imageview}>
+  //           <ActivityIndicator size="large" color={Colors.btncolor} />
+  //         </View>
+  //       ) : (
+  //         <>
+  //           {index <= Imageindex ? (
+  //             <TouchableOpacity
+  //               onPress={() => {
+  //                 setselecteditem(item), setImagePickermodal(true);
+  //                 setSelectimageFormain(item.image == '' ? false : true)
+  //                 setpresIndex(index)
+  //               }}
+  //               style={styles.imageAddviewtouchable}>
+  //               {item.image == '' ? (
+  //                 <>
+  //                   <Image source={Images.addphoto} style={styles.addphoto} />
+  //                   <ResponsiveText style={styles.adphototxt}>
+  //                     {'Add Photo'}
+  //                   </ResponsiveText>
+  //                 </>
+  //               ) : (
+  //                 <>
+  //                   <TouchableOpacity
+  //                     onPress={() => handleItemRemove(item.id)}
+  //                     hitSlop={styles.hitslop}
+  //                     style={styles.crossimage}>
+  //                     <Image
+  //                       source={Images.close}
+  //                       style={styles.closeimg}
+  //                       resizeMode="cover"
+  //                     />
+  //                   </TouchableOpacity>
+  //                   <Image
+  //                     source={{ uri: 'data:image/jpeg;base64,' + item.image }}
+  //                     style={{ ...styles.image, borderWidth: index == Mainimageindex ? 2 : 0, borderColor: index == Mainimageindex ? Colors.btncolor : null }}
+  //                     resizeMode="cover"
+  //                   />
+  //                 </>
+  //               )}
+  //             </TouchableOpacity>
+  //           ) : (
+  //             <View style={{ ...styles.imageview, borderWidth: index == Mainimageindex ? 2 : 0, borderColor: index == Mainimageindex ? Colors.btncolor : null }}>
+  //               {item.image && (
+  //                 <>
+  //                   <TouchableOpacity
+  //                     onPress={() => handleItemRemove(item.id)}
+  //                     hitSlop={styles.hitslop}
+  //                     style={styles.crossimage}>
+  //                     <Image
+  //                       source={Images.close}
+  //                       style={styles.closeimg}
+  //                       resizeMode="cover"
+  //                     />
+  //                   </TouchableOpacity>
+  //                   <Image
+  //                     source={{ uri: item.image }}
+  //                     style={styles.image}
+  //                     resizeMode="cover"
+  //                   />
+  //                 </>
+  //               )}
+  //             </View>
+  //           )}
+  //         </>
+  //       )}
+  //     </>
+  //   );
+  // };
   return (
+
     <Container style={styles.container}>
       <View style={styles.headerView}>
         <View style={styles.dotimg} />
@@ -402,71 +586,7 @@ const Additem = props => {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: '20%' }}>
         <View style={styles.imagemainview}>
-          {/* 
-          <View style={styles.rowview}>
-          <TouchableOpacity
-            onPress={() => {
-            setImagePickermodal(true);
-            }}
-            style={styles.imageAddviewtouchable}>
-            
 
-          
-             {Image1==''?
-             <>
-             <Image source={Images.addphoto} style={styles.addphoto} />
-              <ResponsiveText style={styles.adphototxt}>
-              {'Add Photo'}
-            </ResponsiveText>
-            </> 
-            :
-            <Image
-            source={{uri: item.image}}
-            style={styles.image}
-            resizeMode="cover"
-          /> 
-            
-          }
-          </TouchableOpacity>
-
-
-          <View style={styles.imageview}>
-           
-          </View>
-          </View>
-
-
-
-
-          <View style={styles.rowview}>
-          <TouchableOpacity
-            onPress={() => {
-            setImagePickermodal(true);
-            }}
-            style={styles.imageAddviewtouchable}>
-            
-
-          
-             {Image1==''?
-             <>
-             <Image source={Images.addphoto} style={styles.addphoto} />
-              <ResponsiveText style={styles.adphototxt}>
-              {'Add Photo'}
-            </ResponsiveText>
-            </> 
-            :
-            <Image
-            source={{uri: item.image}}
-            style={styles.image}
-            resizeMode="cover"
-          /> 
-            
-          }
-          </TouchableOpacity>
-          <View style={styles.imageview}>
-           
-          </View>
-          </View> */}
 
           <FlatList
             data={Array}
@@ -474,7 +594,10 @@ const Additem = props => {
             keyExtractor={item => item.id}
             numColumns={3}
             columnWrapperStyle={{ justifyContent: 'space-around' }}
+
           />
+
+
           <ResponsiveText style={styles.sellingtxt}>
             What are you selling:
           </ResponsiveText>
@@ -547,7 +670,7 @@ const Additem = props => {
         <DropdownPinker
 
           setValue={setcategory}
-          data={categoryData}
+          data={dropdownData}
           value={category}
 
         />
@@ -604,6 +727,8 @@ const Additem = props => {
                 onPress={() => {
                   setMainimageindex(presIndex);
                   setImagePickermodal(false)
+
+
                 }}>
                 <ResponsiveText style={styles.buttonTextcancel}>
                   Make as Main Image

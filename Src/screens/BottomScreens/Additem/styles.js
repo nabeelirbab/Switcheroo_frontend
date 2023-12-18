@@ -122,7 +122,7 @@ export const styles = StyleSheet.create({
     sellingvalue: {
         fontWeight: '700',
         paddingLeft: hp(2),
-
+        fontSize: 12,
         paddingVertical: hp(1.8),
         color: '#4f4f4f'
     },

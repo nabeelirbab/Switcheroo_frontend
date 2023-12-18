@@ -64,6 +64,8 @@ export const styles = StyleSheet.create({
     backgroundColor: 'red',
     alignItems: 'center',
     justifyContent: 'center',
+    borderWidth: 2,
+    borderColor: 'darkred'
   },
   rejectBtn: {
     width: wp(42),
@@ -72,6 +74,8 @@ export const styles = StyleSheet.create({
     backgroundColor: 'red',
     alignItems: 'center',
     justifyContent: 'center',
+    borderWidth: 2,
+    borderColor: 'darkred'
   },
   acceptBtn: {
     width: wp(42),
@@ -80,6 +84,8 @@ export const styles = StyleSheet.create({
     backgroundColor: Colors.secondaryColor,
     alignItems: 'center',
     justifyContent: 'center',
+    borderWidth: 2,
+    borderColor: Colors.grentext
   },
   deleteBtntxt: {
     fontSize: 14,
@@ -88,7 +94,7 @@ export const styles = StyleSheet.create({
     verticalAlign: 'middle',
     textAlign: 'center',
     textAlignVertical: 'center',
-    marginTop: 1,
+    marginBottom: 1,
   },
   rate: {
     fontSize: 14,

@@ -1,4 +1,4 @@
-import { FlatList, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { FlatList, Image, Modal, StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import Container from '../../../components/Container'
 import styles from './styles'
@@ -11,12 +11,17 @@ import { getChatlist, markMesegecountzero } from '../../../Apis/Apis'
 import moment from 'moment/moment';
 import { useDispatch } from 'react-redux'
 import { addmessageCount } from '../../../redux/actions/userDataAction'
+import CustomModal from '../../../components/CustomModal'
+import Button from '../../../components/Button'
 
 const Message = (props) => {
 
   const [message, setmessages] = useState('')
   const [messageData, setmessageData] = useState()
-
+  const [reportUser, setreportUser] = useState(false)
+  const [userRepotDetailModal, setuserRepotDetailModal] = useState(false);
+  const [Detail, setDetail] = useState('');
+  const [title, settitle] = useState('');
   const dispatch = useDispatch()
 
 
@@ -48,7 +53,8 @@ const Message = (props) => {
       })} style={styles.mesageview}>
         <View style={styles.imageView}>
           <TouchableOpacity hitSlop={styles.hitslop} onPress={() => props.navigation.navigate('ProductDetail', {
-            item: item
+            item: item,
+            from: 'recive'
           })}>
 
             <Image
@@ -71,9 +77,16 @@ const Message = (props) => {
           </View>
         </View>
 
-        {item?.createdAt && <ResponsiveText style={styles.lastmessage}>
+        {/* {item?.createdAt && <ResponsiveText style={styles.lastmessage}>
           {moment(item?.createdAt).format('hh:mm A')}
-        </ResponsiveText>}
+        </ResponsiveText>} */}
+        <TouchableOpacity onPress={() => setreportUser(true)} hitSlop={styles.hitslop}>
+          <Image
+            source={Images.verticaldot}
+            style={styles.dotimg}
+            resizeMode="contain"
+          />
+        </TouchableOpacity>
         {/* {!item?.messageReadAt && <View style={styles.badge} />} */}
 
       </TouchableOpacity>
@@ -120,6 +133,64 @@ const Message = (props) => {
 
       />
 
+
+
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={reportUser}
+        onRequestClose={() => {
+          setreportUser(false);
+        }}>
+        <TouchableWithoutFeedback onPress={() => setreportUser(false)}>
+          <View style={styles.modalContainer}>
+            <View style={styles.modalContent}>
+              <TouchableOpacity
+                style={styles.modlbtn}
+                hitSlop={styles.hitslop}
+                onPress={() => { setreportUser(false), setuserRepotDetailModal(true) }}>
+                <ResponsiveText style={styles.buttonText}>
+                  Report User
+                </ResponsiveText>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.modlbtn}
+                onPress={() => setreportUser(false)}>
+                <ResponsiveText style={styles.buttonTextcancel}>
+                  Cancel
+                </ResponsiveText>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </TouchableWithoutFeedback>
+      </Modal>
+      <CustomModal modalVisible={userRepotDetailModal} setModalVisible={setuserRepotDetailModal}>
+        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+          <TextInput
+            placeholder="Title of report"
+            value={title}
+            onChangeText={text => settitle(text)}
+            style={styles.input2}
+            placeholderTextColor={Colors.graytext}
+
+          />
+
+          <TextInput
+            placeholder="write detail discreption of your report with reason"
+            value={Detail}
+            onChangeText={text => setDetail(text)}
+            style={[styles.input2, { height: 200 }]} // Make the message input taller
+            multiline={true}
+            placeholderTextColor={Colors.graytext}
+
+          />
+          <Button title="Report this item"
+            btnContainer={styles.contactUs}
+            onPress={() => setuserRepotDetailModal(false)} />
+        </View>
+      </CustomModal>
     </Container>
   )
 }

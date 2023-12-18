@@ -86,7 +86,7 @@ const Listing = props => {
         console.log('resssss de;eeeeee', res);
         SuccessToast({
           title: 'Congratulation',
-          text: 'Offer Deleted Successfully 👍',
+          text: 'Offer Deleted Successfully ',
         });
 
         console.log(`Offer with ID ${item.id} deleted successfully!`);
@@ -108,7 +108,7 @@ const Listing = props => {
         console.log('resssss de;eeeeee', res);
         SuccessToast({
           title: 'Congratulation',
-          text: 'Offer Rejected Successfully 👍',
+          text: 'Offer Rejected Successfully ',
         });
 
         console.log(`Offer with ID ${item.id} Rejected successfully!`);
@@ -120,7 +120,6 @@ const Listing = props => {
 
 
   const handleAcceptMutation = async item => {
-
 
     try {
       acceptOffer({
@@ -134,7 +133,7 @@ const Listing = props => {
         console.log('resssss handleAcceptMutation;eeeeee', res);
         SuccessToast({
           title: 'Congratulation',
-          text: 'Offer Accepted Successfully 👍',
+          text: 'Offer Accepted Successfully ',
         });
 
         console.log(`Offer with ID ${item.id} Accepted successfully!`);
@@ -309,7 +308,7 @@ const Listing = props => {
             />
           ) : (
             <ResponsiveText style={styles.choosebtntxt}>
-              {'You have no offers made yet'}
+              {'You have no offers receive yet'}
             </ResponsiveText>
           )}
         </ScrollView>

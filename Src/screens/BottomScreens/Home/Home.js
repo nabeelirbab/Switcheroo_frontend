@@ -3,6 +3,7 @@ import {
   Image,
   ImageBackground,
   Modal,
+  ScrollView,
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
@@ -55,6 +56,10 @@ import {
   RESULTS,
   openSettings,
 } from "react-native-permissions";
+import { getCategory } from '../../../Apis/Apis';
+
+
+
 const Home = props => {
   const client = useApolloClient();
   const dispatch = useDispatch();
@@ -73,20 +78,37 @@ const Home = props => {
   const [selectedItem, setselectedItem] = useState(
     checkSelectedTitle ? checkSelectedTitle : '',
   );
-
-
   const [swiperIndex, setSwiperIndex] = useState(0);
   const [swipeData, setSwipeData] = useState([]);
   const [myItemData, setmyItemData] = useState([]);
+  const [selectedCategary, setselectedCategary] = useState([]);
+  const [categoryData, setcategoryData] = useState([]);
   const [itemforcashOffer, setitemforcashOffer] = useState({});
   const [queryExecuted, setQueryExecuted] = useState(false);
   const [Cashoffermodal, setCashoffermodal] = useState(false);
   const [cahsValue, setcahsValue] = useState();
   const [errorModal, seterrorModal] = useState(false);
   const [CheckCashoffer, setCheckCashoffer] = useState(false);
+  const [cateGaryModal, setcateGaryModal] = useState(false);
   const [errorMessage, seterrorMessage] = useState('');
   const [signOut] = Logoutacountmutaion();
 
+
+  const handleAddCategory = (label) => {
+    const labelIndex = selectedCategary.indexOf(label);
+
+    if (labelIndex === -1) {
+      // Label doesn't exist, add it
+      setselectedCategary([...selectedCategary, label]);
+    } else {
+      // Label exists, remove it
+      const updatedLabels = [...selectedCategary];
+      updatedLabels.splice(labelIndex, 1);
+      setselectedCategary(updatedLabels);
+    }
+
+
+  };
   const {
     getMyitem,
     loading: MyitemLoading,
@@ -102,6 +124,21 @@ const Home = props => {
   const [updateFcm] = UpdateUserFcm();
 
   useEffect(() => {
+
+    getCategory().then(res => {
+
+      console.log('resoponseeeee', res)
+      let array = []
+      res.data?.categories.map(categry => {
+        console.log('response of categoryyyyy', categry)
+        let object = { label: categry?.name, value: categry?.id }
+        array.push(object)
+      })
+      console.log('arrayarray', array);
+      setcategoryData(array)
+    }).catch(eror => {
+      console.log('eror get category', eror)
+    })
     requestNotificationPermission()
     notificationListener();
     requestUserPermission().then(res => {
@@ -222,7 +259,7 @@ const Home = props => {
           } else {
             SuccessToast({
               title: 'Congratulation',
-              text: 'Request sent successfully 👍',
+              text: 'Request sent successfully ',
             });
           }
         })
@@ -303,7 +340,7 @@ const Home = props => {
             } else {
               SuccessToast({
                 title: 'Congratulation',
-                text: 'Cash offer send 👍',
+                text: 'Cash offer send ',
               });
             }
             setCashoffermodal(false);
@@ -487,16 +524,31 @@ const Home = props => {
       </View>
 
       <View style={styles.choosebtnview}>
-        <TouchableOpacity
+
+
+        <Button
+
+          title={"Switch With"}
+          btnContainer={styles.rowButton}
           onPress={() => {
             getAllmyProdunt(), setchosemodal(!chosemodal);
-          }}>
+          }}
+        />
+        <View style={styles.texttitleview}>
           <ResponsiveText numberOfLines={1} style={styles.choosebtntxt}>
-            {!selectedItem?.title
-              ? 'Choose an item to switch with'
-              : 'Change Item : ' + selectedItem?.title}
+            {selectedItem?.title ?? ' '}
           </ResponsiveText>
-        </TouchableOpacity>
+        </View>
+
+        <Button
+
+          title={"Show First"}
+          btnContainer={styles.showfirstbuton}
+          onPress={() => {
+            setcateGaryModal(!cateGaryModal);
+          }}
+        />
+
       </View>
       {/* {console.log(
         'swiperIndex',
@@ -511,6 +563,8 @@ const Home = props => {
             ref={swiperRef}
             cards={swipeData}
             renderCard={item => {
+              if (!item?.mainImageUrl)
+                return null
               return (
                 <TouchableOpacity
                   style={{ backgroundColor: 'transparent' }}
@@ -780,9 +834,12 @@ const Home = props => {
       </Modal>
       <CustomModal
         modalVisible={Cashoffermodal}
-        setModalVisible={setCashoffermodal}>
+        setModalVisible={setCashoffermodal}
+        height={hp(30)}
+
+      >
         <View style={styles.textOffer}>
-          <TouchableOpacity onPress={() => setCashoffermodal(false)}>
+          <TouchableOpacity style={styles.crosbtn} hitSlop={styles.hitslop} onPress={() => setCashoffermodal(false)}>
             <Image
 
               source={Images.close}
@@ -807,6 +864,63 @@ const Home = props => {
             title={'Give offer'}
             btnContainer={styles.offerbtn}
             onPress={() => Giveoffer()}
+          />
+        </View>
+      </CustomModal>
+      <CustomModal
+        modalVisible={cateGaryModal}
+        setModalVisible={setcateGaryModal}>
+        <View style={styles.textOffer}>
+          <TouchableOpacity style={styles.crosbtn} hitSlop={styles.hitslop} onPress={() => setcateGaryModal(false)}>
+            <Image
+
+              source={Images.close}
+              style={styles.closeBUtton}
+            />
+          </TouchableOpacity>
+
+          <ResponsiveText style={styles.cashtext}>
+            Seleact Category
+          </ResponsiveText>
+          <ScrollView showsVerticalScrollIndicator={false}>
+
+
+            <View style={styles.categoryMain}>
+
+              {categoryData.map((item => {
+
+                return (
+                  <TouchableOpacity onPress={() => handleAddCategory(item.label)}
+                    style={{
+                      ...styles.butonRowView,
+                      borderColor: selectedCategary?.includes(item.label) ? Colors.btncolor : '#BBBBBB',
+                      backgroundColor: selectedCategary?.includes(item.label) ? 'rgba(207, 160, 47, 0.05)' : Colors.backgroundColor
+
+                    }}>
+
+                    <ResponsiveText style={styles.labletext}>
+                      {item.label}
+                    </ResponsiveText>
+
+                    <Image
+                      source={selectedCategary?.includes(item.label) ? Images.activeCheck : Images.unactivecheck}
+                      style={styles.checkbox}
+
+                    />
+
+                  </TouchableOpacity>
+                )
+              }))}
+
+            </View>
+
+          </ScrollView>
+
+          <Button
+            title={'Done'}
+            btnContainer={styles.offerbtn}
+
+            onPress={() => { setcateGaryModal(false) }}
           />
         </View>
       </CustomModal>

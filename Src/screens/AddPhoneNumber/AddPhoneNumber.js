@@ -7,13 +7,13 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useEffect, useRef, useState} from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Container from '../../components/Container';
 import styles from './styles';
-import {SuccessToast} from '../../components/SuccessToast';
+import { SuccessToast } from '../../components/SuccessToast';
 import PhoneInput from 'react-native-phone-number-input';
-import {UpdateMobilenumber} from '../../Graphql/Graphql';
-import {heightPercentageToDP as hp} from '../../components/Responsiveui';
+import { UpdateMobilenumber } from '../../Graphql/Graphql';
+import { heightPercentageToDP as hp } from '../../components/Responsiveui';
 import ResponsiveText from '../../components/ResponsiveText';
 
 const AddphoneNumber = props => {
@@ -40,7 +40,7 @@ const AddphoneNumber = props => {
         if (Updateresponse) {
           SuccessToast({
             title: 'Congratulation',
-            text: 'Mobile number Add Successfully 👍',
+            text: 'Mobile number Add Successfully ',
           });
           props?.navigation?.replace('Addprofile');
         }

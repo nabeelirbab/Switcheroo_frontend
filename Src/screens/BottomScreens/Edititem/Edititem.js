@@ -52,6 +52,7 @@ const categoryData = [
   { label: 'Musical Instruments ', value: '19' },
   { label: 'Handmade Products ', value: '20' },
   { label: 'Video Games', value: '21' },
+  { label: 'Others', value: '22' },
 
 
 
@@ -242,7 +243,7 @@ const Edititem = props => {
         if (result) {
           SuccessToast({
             title: 'Congratulation',
-            text: 'Item updated Successfully 👍',
+            text: 'Item updated Successfully ',
           });
           props.navigation.goBack();
         }
@@ -254,59 +255,155 @@ const Edititem = props => {
     }
   };
 
+  // const selecFromgalery = () => {
+  //   try {
+  //     ImagePicker.openPicker({
+  //       mediaType: 'photo',
+  //       width: 500,
+  //       height: 500,
+  //       cropping: false,
+  //     })
+  //       .then(image => {
+
+  //         // }
+  //         setImagePickermodal(false);
+  //         handleuploadimage(image);
+  //         const updatedArray = Array.map(obj =>
+  //           obj.id === selecteditem.id ? { ...obj, loading: true } : obj,
+  //         );
+
+  //         let nonEmptyImageArray = updatedArray.filter((item) => item.image !== '');
+  //         console.log('nonEmptyImageArray:', nonEmptyImageArray);
+
+  //         // Set the array state with the updated array
+  //         setArray(updatedArray);
+
+  //         // Update the image index based on the length of non-empty images (up to a maximum of 6)
+  //         setImageindex(Math.min(nonEmptyImageArray.length, 6));
+  //         setArray(updatedArray);
+  //       })
+  //       .catch(error => {
+  //         console.log(error, 'error');
+  //         setImagePickermodal(false);
+  //       });
+  //   } catch (error) {
+  //     setImagePickermodal(false);
+
+  //     console.log('errorerror', error);
+  //   }
+  // };
   const selecFromgalery = () => {
     try {
       ImagePicker.openPicker({
         mediaType: 'photo',
-        width: 500,
-        height: 500,
+        width: 300,
+        height: 300,
         cropping: false,
+        multiple: true,
+        maxFiles: 6,
+        includeBase64: true,
       })
-        .then(image => {
-          handleuploadimage(image);
-          const updatedArray = Array.map(obj =>
-            obj.id === selecteditem.id ? { ...obj, loading: true } : obj,
-          );
-          setArray(updatedArray);
+        .then((images) => {
+          setImagePickermodal(false);
+
+          console.log('Selected images:', images);
+
+          // Create a copy of the default array
+          let updatedArray = [...Array];
+          console.log('updatedArray:', updatedArray);
+
+          // Find the first index with an empty image in updatedArray
+          const startIndex = updatedArray.findIndex((item) => !item.image);
+
+          if (startIndex !== -1) {
+            // Iterate over the selected images and update the array starting from startIndex
+            images.forEach((allimages, index) => {
+              const source = { uri: allimages.data };
+              const updatedIndex = startIndex + index;
+
+              if (updatedIndex < updatedArray.length) {
+                updatedArray[updatedIndex] = {
+                  ...updatedArray[updatedIndex],
+                  image: source.uri,
+                  loading: false,
+                };
+              }
+            });
+
+            // Get the length of the updated array with non-empty images
+            let nonEmptyImageArray = updatedArray.filter((item) => item.image !== '');
+            console.log('nonEmptyImageArray:', nonEmptyImageArray);
+
+            // Set the array state with the updated array
+            setArray(updatedArray);
+
+            // Update the image index based on the length of non-empty images (up to a maximum of 6)
+            setImageindex(Math.min(nonEmptyImageArray.length, 6));
+          }
+
+          console.log('Updated array:', updatedArray);
         })
-        .catch(error => {
-          console.log(error, 'error');
+        .catch((error) => {
+          console.log('Error selecting images:', error);
           setImagePickermodal(false);
         });
     } catch (error) {
       setImagePickermodal(false);
-
-      console.log('errorerror', error);
+      console.log('Error in selecFromgalery:', error);
     }
   };
+
+
 
   const selectFromcamera = item => {
     try {
       setImagePickermodal(false);
       ImagePicker.openCamera({
-        width: 500,
-        height: 500,
+        width: 300,
+        height: 300,
         cropping: false,
+        includeBase64: true,
+        multiple: true
+
       }).then(image => {
+        console.log('imageimageimageimage', image);
+        setImagePickermodal(false);
+        const source = { uri: image.data };
+        console.log('sourcesourcesource', source);
+
+
+
         const updatedArray = Array.map(obj =>
-          obj.id === selecteditem.id ? { ...obj, loading: true } : obj,
+          obj.id === selecteditem.id
+            ? { ...obj, image: source.uri || '', loading: false }
+            : obj,
         );
         setArray(updatedArray);
 
-        console.log(image);
-        handleuploadimage(image);
+        let nonEmptyImageArray = updatedArray.filter((item) => item.image !== '');
+        console.log('nonEmptyImageArray:', nonEmptyImageArray);
+
+        setImageindex(Math.min(nonEmptyImageArray.length, 6));
+
+
+
+        // const updatedArray = Array.map(obj =>
+        //   obj.id === selecteditem.id ? { ...obj, loading: true } : obj,
+        // );
+
+        // setArray(updatedArray);
+        // handleuploadimage(image);
       });
     } catch (error) {
       console.log('errorerror', error);
     }
   };
 
+
   const handleuploadimage = async image => {
     try {
       // if (findarray.image == '') {
-      setImageindex(Imageindex + 1);
-      // }
-      setImagePickermodal(false);
+
       const result = await uploadToS3(image);
       console.log('resultresultresult', result);
       if (result) {
@@ -348,6 +445,7 @@ const Edititem = props => {
   };
 
   const renderItem = ({ item, index }) => {
+
     return (
       <>
         {item.loading == true ? (
@@ -385,7 +483,7 @@ const Edititem = props => {
                       />
                     </TouchableOpacity>
                     <Image
-                      source={{ uri: item.image }}
+                      source={{ uri: item?.image?.startsWith("https") ? item?.image : 'data:image/jpeg;base64,' + item?.image }}
                       style={{ ...styles.image, borderWidth: index == Mainimageindex ? 2 : 0, borderColor: index == Mainimageindex ? Colors.btncolor : null }}
 
                       resizeMode="cover"

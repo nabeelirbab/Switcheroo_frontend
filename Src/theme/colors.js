@@ -8,7 +8,8 @@ const Colors = {
   btncolor: '#DBAC3B',
   graytext: '#BDBDBD',
   darkGray: '#4F4F4F',
-  darkBlack: '#404040'
+  darkBlack: '#404040',
+  primery10: `#FAF5EA`
 
 };
 

@@ -12,6 +12,7 @@ import Toast from 'react-native-toast-message';
 
 // Initialize Apollo Client
 const hostUrl = 'http://13.50.221.83/';
+// const hostUrl = 'http://172.16.0.50:5002/';
 
 const link = createHttpLink({
   uri: hostUrl,

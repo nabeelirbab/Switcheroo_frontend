@@ -9,6 +9,27 @@ export const styles = StyleSheet.create({
   container: {
     flex: 1
   },
+  checkbox: {
+    width: wp(5),
+    height: wp(5),
+
+  },
+  butonRowView: {
+    padding: wp(2),
+    borderWidth: 1,
+    borderColor: '#BBBBBB',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    width: wp(75),
+    marginTop: hp(1),
+    borderRadius: 5
+  },
+  labletext: {
+    fontSize: 14,
+    fontFamily: Fonts.Fontsmedeum,
+    color: Colors.black
+  },
   headerView: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -81,17 +102,37 @@ export const styles = StyleSheet.create({
   choosebtnview: {
     borderTopWidth: 0.5,
     borderBottomWidth: 0.5,
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: wp(3),
+    paddingVertical: wp(2),
     borderColor: `${Colors.black}20`,
-    backgroundColor: `${Colors.white}80`
+    backgroundColor: `${Colors.white}80`,
+    flexDirection: "row",
+    marginHorizontal: wp(3)
 
+  },
+  rowButton: {
+
+    width: wp(30),
+    height: hp(4.6)
+  },
+  showfirstbuton: {
+    backgroundColor: Colors.secondaryColor,
+    borderColor: Colors.grentext,
+    width: wp(30),
+    height: hp(4.6)
   },
   choosebtntxt: {
     color: Colors.btncolor,
     fontSize: 16,
-    fontWeight: '500'
+    fontWeight: '500',
+
+
+  },
+  texttitleview: {
+    width: wp(30),
+    alignItems: "center",
+    justifyContent: "center"
   },
   centeredView: {
     flex: 1,
@@ -142,7 +183,7 @@ export const styles = StyleSheet.create({
     borderRadius: 20,
     alignSelf: 'center',
     overflow: 'hidden',
-    marginTop: hp(1),
+
     // marginBottom: hp(2),
     justifyContent: 'flex-end',
   },
@@ -170,21 +211,33 @@ export const styles = StyleSheet.create({
   },
   textOffer: {
     alignItems: "center",
-    justifyContent: "center"
+    height: hp(80),
+    // justifyContent: "center",
+    // backgroundColor: "red"
   },
   cashtext: {
     fontSize: 18,
     fontFamily: Fonts.FontssemiBold,
     color: Colors.black
   },
+  categoryMain: {
+    marginTop: hp(2),
+    alignItems: "center",
+
+  },
+  crosbtn: {
+
+    // alignItems: "center",
+    position: 'absolute',
+
+    right: -wp(2),
+    alignSelf: 'flex-end',
+    top: -wp(5),
+  },
   closeBUtton: {
     width: wp(8),
     height: wp(8),
-    position: 'absolute',
-    right: -wp(10),
-    alignSelf: 'flex-end',
-    bottom: -5,
-    left: wp(35)
+
   },
   TextInput: {
     width: wp(70),

@@ -9,10 +9,26 @@ export const styles = StyleSheet.create({
   container: {
     flex: 1
   },
+  input: {
+    width: wp(80),
+    height: 40,
+    borderColor: Colors.btncolor,
+    borderWidth: 1,
+    marginBottom: 10,
+    padding: 10,
+    borderRadius: 10,
+    verticalAlign: 'top',
+    color: Colors.black
+  },
+  contactUs: {
+    marginTop: hp(2),
+    width: wp(45),
+    height: hp(5)
+  },
   headerView: {
-    paddingTop: hp(Platform.OS == 'ios' ? 5.5 : -1),
+    marginTop: hp(Platform.OS == 'ios' ? 5.5 : -1),
 
-    paddingBottom: hp(1),
+    marginBottom: hp(1),
     paddingHorizontal: wp(2)
   },
   headerText: {
@@ -91,14 +107,18 @@ export const styles = StyleSheet.create({
     fontFamily: Fonts.FontssemiBold,
     color: Colors.black
   },
+  crosbtn: {
+    // alignItems: "center",
+    position: 'absolute',
+
+    right: -wp(2),
+    alignSelf: 'flex-end',
+    top: -wp(5),
+  },
   closeBUtton: {
     width: wp(8),
     height: wp(8),
-    position: 'absolute',
-    right: -wp(10),
-    alignSelf: 'flex-end',
-    bottom: -5,
-    left: wp(35)
+
   },
   dotimg: {
     width: wp(1.5),
@@ -156,7 +176,35 @@ export const styles = StyleSheet.create({
 
   }
 
+  ,
 
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+
+  modalContent: {
+    backgroundColor: 'white',
+    width: wp(100),
+    padding: 20,
+    alignItems: 'flex-start',
+
+  },
+  modlbtn: {
+    width: wp(100),
+    paddingVertical: 10
+  },
+  buttonText: {
+    fontSize: 16,
+    color: 'red',
+
+  },
+  buttonTextcancel: {
+    fontSize: 16,
+    color: Colors.black,
+  },
 
 })
 

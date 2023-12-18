@@ -80,7 +80,7 @@ export const UpdateItemLocation = (props) => {
         console.log('resresres update location of all item', res);
         SuccessToast({
           title: 'Congratulation',
-          text: 'Location updated Successfully 👍'
+          text: 'Location updated Successfully '
         })
         props.navigation.goBack();
       } else {
@@ -89,7 +89,7 @@ export const UpdateItemLocation = (props) => {
         console.log('resresres update location of one item', res);
         SuccessToast({
           title: 'Congratulation',
-          text: 'Location updated Successfully 👍'
+          text: 'Location updated Successfully '
         })
         props.navigation.goBack();
 
@@ -195,7 +195,7 @@ export const UpdateItemLocation = (props) => {
             <GooglePlacesAutocomplete
               placeholder={'Search Location'}
               onPress={onPress}
-              onFail={(error) => console.log(error)}
+              onFail={(error) => console.log('errorerrorerrorerror', error)}
               onNotFound={() => console.log('Not found')}
               minLength={2}
               autoFocus={true}

@@ -132,7 +132,7 @@ const SettingDetail = props => {
       if (Updateresponse?.data?.updateUserDistance) {
         SuccessToast({
           title: 'Congratulation',
-          text: 'Distance updated Successfully 👍',
+          text: 'Distance updated Successfully ',
         });
         props?.navigation?.goBack();
       }
@@ -155,7 +155,7 @@ const SettingDetail = props => {
       if (Updateresponse) {
         SuccessToast({
           title: 'Congratulation',
-          text: 'Location updated Successfully 👍',
+          text: 'Location updated Successfully ',
         });
         props?.navigation?.goBack();
       }
@@ -178,7 +178,7 @@ const SettingDetail = props => {
         if (Updateresponse) {
           SuccessToast({
             title: 'Congratulation',
-            text: 'Gender change Successfully 👍',
+            text: 'Gender change Successfully ',
           });
           props?.navigation?.goBack();
         }
@@ -204,7 +204,7 @@ const SettingDetail = props => {
         if (Updateresponse) {
           SuccessToast({
             title: 'Congratulation',
-            text: 'Date of birth change Successfully 👍',
+            text: 'Date of birth change Successfully ',
           });
           props?.navigation?.goBack();
         }
@@ -234,7 +234,7 @@ const SettingDetail = props => {
         if (Updateresponse) {
           SuccessToast({
             title: 'Congratulation',
-            text: 'Mobile number change Successfully 👍',
+            text: 'Mobile number change Successfully ',
           });
           props?.navigation?.goBack();
         }
@@ -273,7 +273,7 @@ const SettingDetail = props => {
       console.log('responseresponseresponse', response);
       SuccessToast({
         title: 'Congratulation',
-        text: 'Your name change Successfully 👍',
+        text: 'Your name change Successfully ',
       });
       props?.navigation?.goBack();
 
@@ -412,7 +412,7 @@ const SettingDetail = props => {
               value={Distance > 0 ? Distance.toString() : Distance}
               onChangeText={number => {
                 number = number.replace(/[^0-9]/g, ''); // Remove non-numeric characters
-                if (number >= 0 && number <= 1000000000) { setDistance(number) }
+                if (number >= 0 && number <= 5000) { setDistance(number) }
                 if (number.length == 0) {
                   setDistance('0')
                 }
@@ -430,7 +430,7 @@ const SettingDetail = props => {
               minimumTrackTintColor={Colors.primaryColor}
               maximumTrackTintColor={`${Colors.graytext}20`}
               minimumValue={0}
-              maximumValue={1000000000}
+              maximumValue={5000}
               thumbTintColor={Colors.primaryColor}
             />
           </View>

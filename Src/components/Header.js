@@ -11,7 +11,7 @@ const Header = props => {
     <>
       {props?.left == true ?
         <View style={styles.myPioneer}>
-          <TouchableOpacity hitSlop={{ left: 20, right: 20, bottom: 20, top: 20 }} onPress={props.onPress}>
+          <TouchableOpacity style={styles.notificationicon} hitSlop={{ left: 20, right: 20, bottom: 20, top: 20 }} onPress={props.onPress}>
             <Image source={Images.HeaderBackarow} style={styles.leftarrow2} />
           </TouchableOpacity>
           <ResponsiveText style={[styles.title, props.style]}>
@@ -22,11 +22,15 @@ const Header = props => {
         </View>
         :
         <View style={styles.myPioneer}>
-          <View style={styles.notificationicon} />
+          {props.onLefticonPress ? <TouchableOpacity style={styles.leftarrow} onPress={props.onLefticonPress}>
+            <Image source={Images.verticaldot} style={styles.dotimg} resizeMode="contain" />
+          </TouchableOpacity> :
+            <View style={styles.notificationicon} />
+          }
           <ResponsiveText style={[styles.title, props.style]}>
             {props.title ? props.title : null}
           </ResponsiveText>
-          <TouchableOpacity onPress={props.onPress}>
+          <TouchableOpacity style={styles.leftarrow} onPress={props.onPress}>
             <Image source={Images.close} style={styles.leftarrow} />
           </TouchableOpacity>
         </View>
@@ -72,11 +76,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     // marginTop: 10,
     alignItems: 'center',
+
     justifyContent: 'space-between',
     borderWidth: 0,
     paddingHorizontal: wp(3),
     // backgroundColor: 'yellow',
     marginTop: Platform.OS == 'ios' ? wp(2) : wp(6)
+  },
+  dotimg: {
+    width: wp(1.5),
+    height: wp(4)
   },
   btnleft: {
     backgroundColor: Colors.btncolor,
@@ -87,9 +96,10 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   title: {
-    fontSize: 19,
+    fontSize: 18,
     color: Colors.darkBlack,
     fontFamily: Fonts.FontsExtraBold,
+    textAlign: 'center'
   },
   notificationicon: {
     // bottom: 2,
@@ -100,8 +110,8 @@ const styles = StyleSheet.create({
   },
   leftarrow: {
     // tintColor:Colors.black,
-    width: wp(10),
-    height: wp(10),
+    width: wp(8),
+    height: wp(8),
     alignSelf: 'center',
     // backgroundColor:'red'
   },

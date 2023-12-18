@@ -87,9 +87,6 @@ const CHattscreen = (props) => {
 
         startConnection();
 
-
-
-
         return () => {
             connection.stop()
                 .then(() => console.log('Disconnected!'))
@@ -146,9 +143,9 @@ const CHattscreen = (props) => {
     }
 
     const onSend = (newMessages) => {
-        // setMessages((previousMessages) =>
-        //     GiftedChat.append(previousMessages, newMessages)
-        // );
+        setMessages((previousMessages) =>
+            GiftedChat.append(previousMessages, newMessages)
+        );
 
         console.log('newMessagesnewMessagesnewMessages', newMessages);
         createMessage(newMessages[0].text, sender?.offerId).then(res => {

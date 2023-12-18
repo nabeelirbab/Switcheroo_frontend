@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "752477583659",
+    "project_id": "switchero-cd373",
+    "storage_bucket": "switchero-cd373.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:752477583659:android:cbb39c052111d6602ded6e",
+        "android_client_info": {
+          "package_name": "com.switchero"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA6PgySHi4u_Vz20wOKeKww3zjF4h4Rvh8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

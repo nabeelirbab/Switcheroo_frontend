@@ -6,6 +6,7 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  TextInput,
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
@@ -50,12 +51,18 @@ const Profile = props => {
   const [myitems, setmyitems] = useState([]);
   const [Itemmodal, setItemmodal] = useState(false);
   const [DeleteModal, setDeleteModal] = useState(false);
+  const [ContactUsmodal, setContactUsmodal] = useState(false);
   const [warningModal, setwarningModal] = useState(false);
   const [selectedItem, setselectedItem] = useState('');
   const [itemDeleteMessage, setitemDeleteMessage] = useState('');
   const [Location, setLocation] = useState('');
   const [Region, setRegion] = useState('');
   const [archiveItem] = RemoviitemMutation();
+
+
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [message, setMessage] = useState('');
 
   const {
     getMyitem,
@@ -513,12 +520,21 @@ const Profile = props => {
             <Image source={Images.rightarrow} style={styles.rightarow} />
           </TouchableOpacity>
 
-          <Button
-            title={'Delete Account'}
-            titleStyle={{ color: Colors.white }}
-            btnContainer={styles.deletebtn}
-            onPress={() => setDeleteModal(true)}
-          />
+          <View style={styles.rowview}>
+            <Button
+              title={'Contact us'}
+              titleStyle={{ color: Colors.white }}
+              btnContainer={styles.contactUs}
+              onPress={() => setContactUsmodal(true)}
+            />
+
+            <Button
+              title={'Delete Account'}
+              titleStyle={{ color: Colors.white }}
+              btnContainer={styles.deletebtn}
+              onPress={() => setDeleteModal(true)}
+            />
+          </View>
         </ScrollView>
       )}
 
@@ -628,6 +644,42 @@ const Profile = props => {
           </View>
         </View>
       </CustomModal>
+
+
+      <CustomModal modalVisible={ContactUsmodal} setModalVisible={setContactUsmodal}>
+        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+          <TextInput
+            placeholder="Name"
+            value={name}
+            onChangeText={text => setName(text)}
+            style={styles.input}
+            placeholderTextColor={Colors.graytext}
+
+          />
+          <TextInput
+            placeholder="Email"
+            value={email}
+            onChangeText={text => setEmail(text)}
+            style={styles.input}
+            keyboardType="email-address"
+            placeholderTextColor={Colors.graytext}
+          />
+          <TextInput
+            placeholder="Message"
+            value={message}
+            onChangeText={text => setMessage(text)}
+            style={[styles.input, { height: 200 }]} // Make the message input taller
+            multiline={true}
+            placeholderTextColor={Colors.graytext}
+
+          />
+          <Button title="Send"
+            btnContainer={styles.contactUs}
+            onPress={() => { setContactUsmodal(false) }} />
+        </View>
+      </CustomModal>
+
+
       <CustomModal modalVisible={DeleteModal} setModalVisible={setDeleteModal}>
         <View style={styles.deletemodal}>
           <ResponsiveText style={styles.deletetxt}>

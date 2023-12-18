@@ -11,6 +11,18 @@ export const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+
+  input: {
+    width: wp(80),
+    height: 40,
+    borderColor: Colors.btncolor,
+    borderWidth: 1,
+    marginBottom: 10,
+    padding: 10,
+    borderRadius: 10,
+    verticalAlign: 'top',
+    color: Colors.black
+  },
   headerView: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -222,6 +234,11 @@ export const styles = StyleSheet.create({
     marginTop: hp(2),
     backgroundColor: 'red',
     borderColor: 'darkred',
+    width: wp(45),
+    height: hp(5)
+  },
+  contactUs: {
+    marginTop: hp(2),
     width: wp(45),
     height: hp(5)
   },

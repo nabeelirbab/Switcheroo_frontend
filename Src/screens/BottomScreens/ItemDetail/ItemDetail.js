@@ -1,10 +1,16 @@
 import {
+  Alert,
   Image,
   ImageBackground,
 
+  Modal,
+
   ScrollView,
 
+  TextInput,
+
   TouchableOpacity,
+  TouchableWithoutFeedback,
   View,
 } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
@@ -22,7 +28,7 @@ import Header from '../../../components/Header';
 import { SuccessToast } from '../../../components/SuccessToast';
 import { ErrorToast } from '../../../components/ErrorToast';
 import { useCreateCashOfferMutation } from '../../../Graphql/Graphql';
-import { getAddressFromLatLng } from '../../../Apis/Apis';
+import { getAddressFromLatLng, reportAnitem } from '../../../Apis/Apis';
 import Carousel from 'react-native-snap-carousel';
 const ItemDetail = props => {
   let previousdata = props?.route?.params?.item
@@ -37,8 +43,12 @@ const ItemDetail = props => {
   const [swiperData, setswiperData] = useState([...previousdata.imageUrls, previousdata?.mainImageUrl])
   const [cardIndex, setcardIndex] = useState(0)
   const [Cashoffermodal, setCashoffermodal] = useState(false);
+  const [ReportItem, setReportItem] = useState(false);
+  const [ItemRepotDetailModal, setItemRepotDetailModal] = useState(false);
   const [cahsValue, setcahsValue] = useState();
   const [Location, setLocation] = useState('');
+  const [Detail, setDetail] = useState('');
+  const [title, settitle] = useState('');
 
 
 
@@ -49,6 +59,39 @@ const ItemDetail = props => {
       .catch(error => console.error(error.message));
 
   }, [])
+
+
+  const reportItemHandle = async () => {
+
+    // 
+
+    if (!title) {
+      Alert.alert('Field Required', 'Please write title of your report');
+    }
+    else if (!Detail) {
+
+      Alert.alert('Field Required', 'Please write detail discreption of your report with reason');
+
+    }
+    else {
+
+      const response = await reportAnitem(previousdata?.targetItem.id, title, Detail)
+      console.log('responseresponseresponse offfffffff report', response);
+      if (response?.data.createItemComplaint) {
+        setDetail(''),
+          settitle('')
+        setItemRepotDetailModal(false)
+        setReportItem(false)
+        SuccessToast({
+          title: 'Congratulation',
+          text: `Your complaint has been registered. We're on it and will get back to you soon. Thank you for letting us know!`,
+        });
+      }
+
+
+    }
+
+  }
 
   const Giveoffer = () => {
 
@@ -75,7 +118,7 @@ const ItemDetail = props => {
             } else {
               SuccessToast({
                 title: 'Congratulation',
-                text: 'Cash offer send 👍',
+                text: 'Cash offer send ',
               });
               props.navigation.navigate('TabBarNav', {
                 screen: 'Home'
@@ -156,7 +199,7 @@ const ItemDetail = props => {
         //   refrence?.swipeRight()
         //   SuccessToast({
         //     title: 'Congratulation',
-        //     text: 'Request send successfully 👍',
+        //     text: 'Request send successfully ',
         //   });
         //   console.log('createOfferResponse',res);
         //   if(res?.data?.createOffer?.targeteStatus==1){
@@ -196,7 +239,10 @@ const ItemDetail = props => {
   return (
     <Container style={styles.container}>
       <View style={styles.headerView}>
-        <Header title={'Detail'} onPress={() => props.navigation.goBack()} />
+        <Header
+          title={'Detail'}
+          onPress={() => props.navigation.goBack()}
+          onLefticonPress={() => setReportItem(true)} />
 
       </View>
 
@@ -361,7 +407,7 @@ const ItemDetail = props => {
           modalVisible={Cashoffermodal}
           setModalVisible={setCashoffermodal}>
           <View style={styles.textOffer}>
-            <TouchableOpacity onPress={() => setCashoffermodal(false)}>
+            <TouchableOpacity style={styles.crosbtn} onPress={() => setCashoffermodal(false)}>
               <Image
 
                 source={Images.close}
@@ -391,6 +437,72 @@ const ItemDetail = props => {
         </CustomModal>
 
       </ScrollView>
+
+
+
+
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={ReportItem}
+        onRequestClose={() => {
+          setReportItem(false);
+        }}>
+        <TouchableWithoutFeedback onPress={() => setReportItem(false)}>
+          <View style={styles.modalContainer}>
+            <View style={styles.modalContent}>
+              <TouchableOpacity
+                style={styles.modlbtn}
+                hitSlop={styles.hitslop}
+                onPress={() => { setReportItem(false), setItemRepotDetailModal(true) }}>
+                <ResponsiveText style={styles.buttonText}>
+                  Report Item
+                </ResponsiveText>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.modlbtn}
+                onPress={() => setReportItem(false)}>
+                <ResponsiveText style={styles.buttonTextcancel}>
+                  Cancel
+                </ResponsiveText>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </TouchableWithoutFeedback>
+      </Modal>
+
+
+
+
+
+
+      <CustomModal modalVisible={ItemRepotDetailModal} setModalVisible={setItemRepotDetailModal}>
+        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+          <TextInput
+            placeholder="Title of report"
+            value={title}
+            onChangeText={text => settitle(text)}
+            style={styles.input}
+            placeholderTextColor={Colors.graytext}
+
+          />
+
+          <TextInput
+            placeholder="write detail discreption of your report with reason"
+            value={Detail}
+            onChangeText={text => setDetail(text)}
+            style={[styles.input, { height: 200 }]} // Make the message input taller
+            multiline={true}
+            placeholderTextColor={Colors.graytext}
+
+          />
+          <Button title="Report this item"
+            btnContainer={styles.contactUs}
+            onPress={() => reportItemHandle()} />
+        </View>
+      </CustomModal>
     </Container>
   );
 };

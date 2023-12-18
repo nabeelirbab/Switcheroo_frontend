@@ -26,10 +26,27 @@ export const styles = StyleSheet.create({
         fontFamily: Fonts.FontsExtraBold
 
     },
+    contactUs: {
+        marginTop: hp(2),
+        width: wp(45),
+        height: hp(5)
+    },
+    input2: {
+        width: wp(80),
+        height: 40,
+        borderColor: Colors.btncolor,
+        borderWidth: 1,
+        marginBottom: 10,
+        padding: 10,
+        borderRadius: 10,
+        verticalAlign: 'top',
+        color: Colors.black
+    },
     dotimg: {
         width: wp(1.5),
         height: wp(4)
     },
+
     inputview: {
         padding: 2,
         marginHorizontal: wp(6),
@@ -103,7 +120,37 @@ export const styles = StyleSheet.create({
         left: 4,
         alignSelf: "center"
 
-    }
+    },
+
+    // Modallll
+
+    modalContainer: {
+        flex: 1,
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    },
+
+    modalContent: {
+        backgroundColor: 'white',
+        width: wp(100),
+        padding: 20,
+        alignItems: 'flex-start',
+
+    },
+    modlbtn: {
+        width: wp(100),
+        paddingVertical: 10
+    },
+    buttonText: {
+        fontSize: 16,
+        color: 'red',
+
+    },
+    buttonTextcancel: {
+        fontSize: 16,
+        color: Colors.black,
+    },
 
 })
 

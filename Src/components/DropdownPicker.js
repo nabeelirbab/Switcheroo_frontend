@@ -3,9 +3,10 @@ import { View, Text, StyleSheet } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from './Responsiveui';
 import Colors from '../theme/colors';
+import { getCategory } from '../Apis/Apis';
 
 const DropdownPinker = ({ setValue, data, value }) => {
-    console.log('data', data);
+
 
     return (
         <View style={{ alignSelf: "center", backgroundColor: '#fff', alignItems: "center" }}>
@@ -14,13 +15,16 @@ const DropdownPinker = ({ setValue, data, value }) => {
                 containerStyle={styles.dropdown2}
                 selectedTextStyle={{ color: Colors.darkGray, }}
                 placeholder='Please Select a Category'
+                placeholderStyle={{ color: Colors.darkGray, }}
+                itemTextStyle={{ color: Colors.darkGray, }}
+                itemContainerStyle={{}}
 
                 labelField="label"
-                valueField="value"
+                valueField="label"
                 data={data}
-                value={value}
+                value={value?.label}
                 onChange={item => {
-                    setValue(item.value);
+                    setValue(item);
                 }}
             />
         </View>

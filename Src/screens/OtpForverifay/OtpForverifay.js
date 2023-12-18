@@ -46,7 +46,7 @@ export default function OtpForverifay(props) {
             if (response?.data) {
                 SuccessToast({
                     title: 'Congratulation',
-                    text: 'Your account is now verified 👍',
+                    text: 'Your account is now verified ',
                 });
                 props.navigation.navigate('Login')
             }
@@ -73,7 +73,7 @@ export default function OtpForverifay(props) {
             setresend(true)
             SuccessToast({
                 title: 'Congratulation',
-                text: 'An OTP has been sent to your email 👍',
+                text: 'An OTP has been sent to your email ',
             });
 
 

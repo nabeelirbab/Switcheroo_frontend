@@ -1,5 +1,5 @@
 export const apiKey = 'AIzaSyBNOZn8be1ix47uhHa8cRc385pJhsW8OEs'
-// export const apiKey='AIzaSyATTgMgx1CkzrcTjaJ3Y7clEdpMd51-WLo'
+// export const apiKey = 'AIzaSyATTgMgx1CkzrcTjaJ3Y7clEdpMd51-WLo'
 import axios from 'axios';
 
 const GRAPHQL_ENDPOINT = 'http://13.50.221.83/';
@@ -22,7 +22,7 @@ export const getAddressFromLatLng = async (latitude, longitude) => {
       throw new Error('No results found');
     }
   } catch (error) {
-    throw new Error('Error fetching address: ' + error.message);
+    throw new Error('Error fetching address: ' + error);
   }
 };
 
@@ -427,6 +427,119 @@ export const UserNameUpdate = (firstName, lastName) => {
       }
     }
   `;
+
+  return axios.post(GRAPHQL_ENDPOINT, {
+    query: mutation
+  }, {
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+    .then(response => {
+      console.log('Response:', response.data);
+      return response.data;
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      throw error;
+    });
+};
+
+export const createItem = async (itemData) => {
+  const query = `
+    mutation CreateItem {
+      createItem(
+        item: {
+          askingPrice: ${itemData.askingPrice}
+          categories: "${itemData.categories}"
+          description: "${itemData.description}"
+          imageUrls: "${itemData.imageUrls}"
+          isSwapOnly: ${itemData.isSwapOnly}
+          latitude: ${itemData.latitude}
+          longitude: ${itemData.longitude}
+          mainImageUrl: "${itemData.mainImageUrl}"
+          title: "${itemData.title}"
+        }
+      ) {
+        askingPrice
+        categories
+        createdByUserId
+        description
+        id
+        imageUrls
+        isFlexible
+        isHidden
+        isSwapOnly
+        latitude
+        longitude
+        mainImageUrl
+        title
+        updatedByUserId
+      }
+    }
+  `;
+  return axios.post(GRAPHQL_ENDPOINT, {
+    query: query
+  }, {
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+    .then(response => {
+      console.log('Response:', response.data);
+      return response.data;
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      throw error;
+    });
+};
+
+export const getCategory = async () => {
+  const query = `query Categories {
+    categories {
+        id
+        name
+    }
+}
+`;
+  console.log('queryqueryqueryqueryqueryquery', query);
+  return axios.post(GRAPHQL_ENDPOINT, {
+    query: query
+  }, {
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+    .then(response => {
+      console.log('Response:', response.data);
+      return response.data;
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      throw error;
+    });
+};
+
+
+export const reportAnitem = async (itemId, title, description) => {
+  console.log('itemId, title, description', itemId, title, description);
+
+  const mutation = `
+    mutation {
+      createItemComplaint(
+        complaint: {
+          title: "${title}",
+          description: "${description}"
+        }
+        itemId: "${itemId}"
+      ) {
+        id
+      }
+    }
+  `;
+
+  console.log('mutation:', mutation);
 
   return axios.post(GRAPHQL_ENDPOINT, {
     query: mutation
