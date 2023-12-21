@@ -43,35 +43,7 @@ let defaultaray = [
   { id: 6, image: '', loading: false },
 ];
 
-const categoryData = [
-  { label: 'Automotive', value: '1' },
-  { label: 'Cell Phones & Accessories ', value: '2' },
-  { label: 'Home & Kitchen ', value: '3' },
-  { label: 'Electronics', value: '4' },
-  { label: 'Tools & Home Improvement ', value: '5' },
-  { label: 'Clothing, Shoes & Jewelry ', value: '6' },
-  { label: 'Patio, Lawn & Garden ', value: '7' },
-  { label: 'Office Products ', value: '8' },
-  { label: 'Toys & Games ', value: '9' },
-  {
-    label: 'Sports & Outdoors ', value: '10'
-  },
-  { label: 'Industrial & Scientific ', value: '11' },
-  { label: 'Appliances ', value: '12' },
-  { label: 'Pet Supplies ', value: '13' },
-  { label: 'Health & Household', value: '14' },
-  { label: 'Beauty & Personal Care ', value: '15' },
-  { label: 'Arts, Crafts & Sewing ', value: '16' },
-  { label: 'Baby Products ', value: '17' },
-  { label: 'Grocery & Gourmet Food ', value: '18' },
-  { label: 'Musical Instruments ', value: '19' },
-  { label: 'Handmade Products ', value: '20' },
-  { label: 'Video Games', value: '21' },
-  { label: 'Others', value: '22' },
 
-
-
-]
 const Additem = props => {
   const dispatch = useDispatch();
   const [Array, setArray] = useState(defaultaray);
@@ -193,7 +165,7 @@ const Additem = props => {
           const mainImage = imageUrls.splice(Mainimageindex, 1)[0];
           imageUrls.unshift(mainImage);
         }
-        const result = extractUrlAndRemainingArray(imageUrls, 0);
+        const result = extractUrlAndRemainingArray(imageUrls, Mainimageindex);
         console.log('resultresultresult', result.selectedUrl);
         console.log('resultresultresultresultresult', result.remainingUrls);
 

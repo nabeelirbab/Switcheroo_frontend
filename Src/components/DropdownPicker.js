@@ -1,29 +1,32 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, StyleSheet } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from './Responsiveui';
 import Colors from '../theme/colors';
-import { getCategory } from '../Apis/Apis';
 
 const DropdownPinker = ({ setValue, data, value }) => {
+    // State to manage dropdown value
+    const [dropdownValue, setDropdownValue] = useState(value);
 
-
+    // Update dropdown value when defaultValue changes
+    useEffect(() => {
+        setDropdownValue(value);
+    }, [value]);
     return (
         <View style={{ alignSelf: "center", backgroundColor: '#fff', alignItems: "center" }}>
             <Dropdown
                 style={styles.dropdown}
                 containerStyle={styles.dropdown2}
-                selectedTextStyle={{ color: Colors.darkGray, }}
-                placeholder='Please Select a Category'
-                placeholderStyle={{ color: Colors.darkGray, }}
-                itemTextStyle={{ color: Colors.darkGray, }}
-                itemContainerStyle={{}}
-
+                selectedTextStyle={{ color: Colors.darkGray }}
+                placeholder={dropdownValue?.value}
+                placeholderStyle={{ color: Colors.darkGray }}
+                itemTextStyle={{ color: Colors.darkGray }}
                 labelField="label"
-                valueField="label"
+                valueField="value"
                 data={data}
-                value={value?.label}
+                value={dropdownValue?.value}
                 onChange={item => {
+                    setDropdownValue(item);
                     setValue(item);
                 }}
             />

@@ -65,7 +65,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 2,
-    borderColor: 'darkred'
+    borderColor: '#c21f0a'
   },
   rejectBtn: {
     width: wp(42),
@@ -75,7 +75,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 2,
-    borderColor: 'darkred'
+    borderColor: '#c21f0a'
   },
   acceptBtn: {
     width: wp(42),

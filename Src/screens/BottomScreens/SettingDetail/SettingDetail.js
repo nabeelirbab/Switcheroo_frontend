@@ -412,7 +412,7 @@ const SettingDetail = props => {
               value={Distance > 0 ? Distance.toString() : Distance}
               onChangeText={number => {
                 number = number.replace(/[^0-9]/g, ''); // Remove non-numeric characters
-                if (number >= 0 && number <= 5000) { setDistance(number) }
+                if (number >= 0 && number <= 500) { setDistance(number) }
                 if (number.length == 0) {
                   setDistance('0')
                 }
@@ -430,7 +430,7 @@ const SettingDetail = props => {
               minimumTrackTintColor={Colors.primaryColor}
               maximumTrackTintColor={`${Colors.graytext}20`}
               minimumValue={0}
-              maximumValue={5000}
+              maximumValue={500}
               thumbTintColor={Colors.primaryColor}
             />
           </View>

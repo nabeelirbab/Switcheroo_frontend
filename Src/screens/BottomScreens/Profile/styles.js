@@ -233,7 +233,7 @@ export const styles = StyleSheet.create({
   deletebtn: {
     marginTop: hp(2),
     backgroundColor: 'red',
-    borderColor: 'darkred',
+    borderColor: '#c21f0a',
     width: wp(45),
     height: hp(5)
   },

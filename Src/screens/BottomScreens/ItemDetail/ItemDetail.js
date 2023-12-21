@@ -75,7 +75,7 @@ const ItemDetail = props => {
     }
     else {
 
-      const response = await reportAnitem(previousdata?.targetItem.id, title, Detail)
+      const response = await reportAnitem(previousdata?.id, title, Detail)
       console.log('responseresponseresponse offfffffff report', response);
       if (response?.data.createItemComplaint) {
         setDetail(''),

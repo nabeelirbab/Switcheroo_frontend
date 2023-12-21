@@ -3,6 +3,8 @@ export const apiKey = 'AIzaSyBNOZn8be1ix47uhHa8cRc385pJhsW8OEs'
 import axios from 'axios';
 
 const GRAPHQL_ENDPOINT = 'http://13.50.221.83/';
+// const GRAPHQL_ENDPOINT = 'http://172.16.0.50:5002/';
+
 export const getAddressFromLatLng = async (latitude, longitude) => {
   try {
 
@@ -533,6 +535,45 @@ export const reportAnitem = async (itemId, title, description) => {
           description: "${description}"
         }
         itemId: "${itemId}"
+      ) {
+        id
+      }
+    }
+  `;
+
+  console.log('mutation:', mutation);
+
+  return axios.post(GRAPHQL_ENDPOINT, {
+    query: mutation
+  }, {
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+    .then(response => {
+      console.log('Response:', response.data);
+      return response.data;
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      throw error;
+    });
+};
+
+
+
+
+export const ComplaintAgainstuser = async (userId, title, description) => {
+  console.log('userId, title, description', userId, title, description);
+
+  const mutation = `
+    mutation {
+      createUserComplaint(
+        userId: "${userId}",
+        complaint: {
+          title: "${title}",
+          description: "${description}"
+        }
       ) {
         id
       }

@@ -11,7 +11,33 @@ export const styles = StyleSheet.create({
         flex: 1
     },
     hitslop: { top: 50, bottom: 50, right: 50, left: 50 },
-
+    btn: {
+        width: wp(38),
+        backgroundColor: Colors.secondaryColor,
+        borderColor: Colors.secondaryColor,
+    },
+    btnno: {
+        width: wp(38),
+        backgroundColor: Colors.graytext,
+        borderColor: Colors.graytext,
+    },
+    deletemodal: {
+        alignItems: "center",
+        justifyContent: 'center'
+    },
+    btnrow: {
+        flexDirection: 'row',
+        alignItems: "center",
+        justifyContent: 'space-between',
+        marginTop: hp(4),
+        width: wp(80)
+    },
+    deletetxt: {
+        fontSize: 18,
+        color: Colors.black,
+        fontFamily: Fonts.FontsBold,
+        textAlign: "center"
+    },
     headerView: {
         flexDirection: 'row',
         alignItems: 'center',

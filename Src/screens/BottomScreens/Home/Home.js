@@ -454,6 +454,7 @@ const Home = props => {
         console.log('====================================');
         axios
           .post('http://13.50.221.83/', { query, variables })
+          // .post('http://172.16.0.50:5002/', { query, variables })
           .then(response => {
             console.log(
               'Response data:',

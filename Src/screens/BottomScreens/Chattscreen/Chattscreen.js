@@ -3,22 +3,68 @@ import { GiftedChat } from 'react-native-gifted-chat';
 import Container from '../../../components/Container';
 import styles from './styles';
 import Header, { HeaderleftImage } from '../../../components/Header';
-import { View } from 'react-native';
+import { Alert, Modal, View, TouchableWithoutFeedback, TouchableOpacity, TextInput } from 'react-native';
 import Button from '../../../components/Button';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from '../../../components/Responsiveui';
 import ResponsiveText from '../../../components/ResponsiveText';
 import CustomModal from '../../../components/CustomModal';
-import { createMessage, getallchMessages, markmessageasread, unMatchOffer } from '../../../Apis/Apis';
+import { ComplaintAgainstuser, createMessage, getallchMessages, markmessageasread, unMatchOffer } from '../../../Apis/Apis';
 import { useGetMyNameQuery } from '../../../Graphql/Graphql';
 import moment from 'moment/moment';
 
 import { HubConnectionBuilder } from '@microsoft/signalr';
+import Colors from '../../../theme/colors';
+import { SuccessToast } from '../../../components/SuccessToast';
 
 
 const CHattscreen = (props) => {
     let sender = props.route.params.item;
     console.log('sendersendersender', sender);
+    const [Detail, setDetail] = useState('');
+    const [title, settitle] = useState('');
+    const [reportUser, setreportUser] = useState(false)
+    const [userRepotDetailModal, setuserRepotDetailModal] = useState(false);
+    const handleReportauser = async () => {
 
+        try {
+
+            if (!title) {
+                Alert.alert('Field Required', 'Please write title of your report');
+            }
+            else if (!Detail) {
+
+                Alert.alert('Field Required', 'Please write detail discreption of your report with reason');
+
+            }
+            else {
+
+
+                console.log(sender?.targetUser[0]?.id, 'SelectedItemDataSelectedItemData')
+
+                let responsereport = await ComplaintAgainstuser(sender?.targetUser[0]?.id, title, Detail)
+                console.log('responsereportresponsereportresponsereport', responsereport);
+                if (responsereport) {
+                    setreportUser(false), setuserRepotDetailModal(false)
+                    setDetail('')
+                    settitle('')
+                    SuccessToast({
+                        title: 'Congratulation',
+                        text: `Your complaint has been registered. We're on it and will get back to you soon. Thank you for letting us know!`,
+                    });
+                }
+
+
+
+            }
+
+
+
+
+
+        } catch (error) {
+
+        }
+    }
 
     const unMatchCall = async () => {
         try {
@@ -39,6 +85,8 @@ const CHattscreen = (props) => {
     const [messages, setMessages] = useState([]);
     const connection = new HubConnectionBuilder()
         .withUrl('http://13.50.221.83/chatHub')
+        // .withUrl('http://172.16.0.50:5002/chatHub')
+
         .build();
     useEffect(() => {
         // Build new connection
@@ -159,10 +207,15 @@ const CHattscreen = (props) => {
     return (
         <Container style={styles.container}>
             <View style={styles.headerView}>
-                <HeaderleftImage title={sender?.targetItem[0]?.title}
+                {/* <HeaderleftImage title={sender?.targetItem[0]?.title}
                     onPress={() => props.navigation.goBack()}
                     onUnmatchPress={() => setunmatchModal(true)}
-                />
+                /> */}
+                <Header
+                    title={sender?.targetItem[0]?.title}
+                    onPress={() => props.navigation.goBack()}
+                    onLefticonPress={() => setreportUser(true)} />
+
 
             </View>
 
@@ -213,6 +266,71 @@ const CHattscreen = (props) => {
                         />
                     </View>
 
+                </View>
+            </CustomModal>
+
+
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={reportUser}
+                onRequestClose={() => {
+                    setreportUser(false);
+                }}>
+                <TouchableWithoutFeedback onPress={() => setreportUser(false)}>
+                    <View style={styles.modalContainer}>
+                        <View style={styles.modalContent}>
+
+                            <TouchableOpacity
+                                style={styles.modlbtn}
+                                onPress={() => { setunmatchModal(true), setreportUser(false) }}>
+                                <ResponsiveText style={styles.buttonText}>
+                                    Unmatch
+                                </ResponsiveText>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                style={styles.modlbtn}
+                                onPress={() => { setreportUser(false), setuserRepotDetailModal(true) }}>
+                                <ResponsiveText style={styles.buttonText}>
+                                    Report User
+                                </ResponsiveText>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity
+                                style={styles.modlbtn}
+                                onPress={() => setreportUser(false)}>
+                                <ResponsiveText style={styles.buttonTextcancel}>
+                                    Cancel
+                                </ResponsiveText>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </TouchableWithoutFeedback>
+            </Modal>
+
+            <CustomModal modalVisible={userRepotDetailModal} setModalVisible={setuserRepotDetailModal}>
+                <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                    <TextInput
+                        placeholder="Title of report"
+                        value={title}
+                        onChangeText={text => settitle(text)}
+                        style={styles.input2}
+                        placeholderTextColor={Colors.graytext}
+
+                    />
+
+                    <TextInput
+                        placeholder="write detail discreption of your report with reason"
+                        value={Detail}
+                        onChangeText={text => setDetail(text)}
+                        style={[styles.input2, { height: 200 }]} // Make the message input taller
+                        multiline={true}
+                        placeholderTextColor={Colors.graytext}
+
+                    />
+                    <Button title="Report this item"
+                        btnContainer={styles.contactUs}
+                        onPress={() => handleReportauser()} />
                 </View>
             </CustomModal>
         </Container>

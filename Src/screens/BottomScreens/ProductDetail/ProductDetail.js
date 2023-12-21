@@ -85,7 +85,7 @@ const ProductDetail = props => {
             console.log('responseresponseresponse offfffffff report', response);
             if (response?.data.createItemComplaint) {
                 setDetail(''),
-                settitle('')
+                    settitle('')
                 setItemRepotDetailModal(false)
                 setReportItem(false)
                 SuccessToast({
@@ -361,7 +361,7 @@ const ProductDetail = props => {
                         titleStyle={{}}
                         btnContainer={{
                             backgroundColor: "red",
-                            borderColor: 'darkred',
+                            borderColor: '#c21f0a',
 
                             marginTop: hp(3),
                             width: wp(45)

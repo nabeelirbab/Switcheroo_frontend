@@ -23,40 +23,10 @@ import uploadToS3 from '../../../components/Uploads3File';
 import Geolocation from '@react-native-community/geolocation';
 import { UpdateItemMutation } from '../../../Graphql/Graphql';
 import { heightPercentageToDP as hp } from '../../../components/Responsiveui';
-import { apiKey, getAddressFromLatLng } from '../../../Apis/Apis';
+import { apiKey, getAddressFromLatLng, getCategory } from '../../../Apis/Apis';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { SuccessToast } from '../../../components/SuccessToast';
 import DropdownPinker from '../../../components/DropdownPicker';
-
-const categoryData = [
-  { label: 'Automotive', value: '1' },
-  { label: 'Cell Phones & Accessories ', value: '2' },
-  { label: 'Home & Kitchen ', value: '3' },
-  { label: 'Electronics', value: '4' },
-  { label: 'Tools & Home Improvement ', value: '5' },
-  { label: 'Clothing, Shoes & Jewelry ', value: '6' },
-  { label: 'Patio, Lawn & Garden ', value: '7' },
-  { label: 'Office Products ', value: '8' },
-  { label: 'Toys & Games ', value: '9' },
-  {
-    label: 'Sports & Outdoors ', value: '10'
-  },
-  { label: 'Industrial & Scientific ', value: '11' },
-  { label: 'Appliances ', value: '12' },
-  { label: 'Pet Supplies ', value: '13' },
-  { label: 'Health & Household', value: '14' },
-  { label: 'Beauty & Personal Care ', value: '15' },
-  { label: 'Arts, Crafts & Sewing ', value: '16' },
-  { label: 'Baby Products ', value: '17' },
-  { label: 'Grocery & Gourmet Food ', value: '18' },
-  { label: 'Musical Instruments ', value: '19' },
-  { label: 'Handmade Products ', value: '20' },
-  { label: 'Video Games', value: '21' },
-  { label: 'Others', value: '22' },
-
-
-
-]
 
 
 
@@ -95,14 +65,28 @@ const Edititem = props => {
   const [cashTogle, setcashTogle] = useState(previousdata?.isSwapOnly);
   const [Locationname, setLocationname] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
-  const [category, setcategory] = useState('');
-
+  const [category, setcategory] = useState(previousdata?.categories.length > 0 ? { label: previousdata?.categories[0], value: previousdata?.categories[0] } : '');
+  console.log('previousdata?.categories[0]', category);
   const [ImagePickermodal, setImagePickermodal] = useState(false);
   const [Mainimageindex, setMainimageindex] = useState(0);
   const [SelectimageFormain, setSelectimageFormain] = useState(false);
-
+  const [dropdownData, setDropdownData] = useState([])
   const [presIndex, setpresIndex] = useState(0);
   useEffect(() => {
+    getCategory().then(res => {
+
+      console.log('resoponseeeee', res)
+      let array = []
+      res.data?.categories.map(categry => {
+        console.log('response of categoryyyyy', categry)
+        let object = { label: categry?.name, value: categry?.id }
+        array.push(object)
+      })
+      console.log('arrayarray', array);
+      setDropdownData(array)
+    }).catch(eror => {
+      console.log('eror get category', eror)
+    })
     setArray(defaultaray);
     setImageindex(0)
 
@@ -179,6 +163,16 @@ const Edititem = props => {
   //     console.log(info);
   //   });
   // };
+  function extractUrlAndRemainingArray(urls, index) {
+    if (index < 0 || index >= urls.length) {
+      return null; // Index out of bounds
+    }
+
+    const selectedUrl = urls[index];
+    const remainingUrls = [...urls.slice(0, index), ...urls.slice(index + 1)].map((url) => (url.toString()));
+    console.log('remainingUrlsremainingUrls', remainingUrls);
+    return { selectedUrl, remainingUrls };
+  }
 
   const uploaditem = async () => {
     try {
@@ -192,7 +186,12 @@ const Edititem = props => {
         Alert.alert('Field Required', 'Please enter your item price');
       } else if (!Discreption) {
         Alert.alert('Field Required', 'Please enter your item descreption');
-      } else {
+      }
+      else if (!category?.value) {
+        Alert.alert('Field Required', 'Please select your item category');
+      }
+
+      else {
         const imageUrls = Array.filter(obj => obj.image !== '').map(
           obj => obj.image,
         );
@@ -219,28 +218,36 @@ const Edititem = props => {
         else {
           trimmedValue = value
         }
+        const result = extractUrlAndRemainingArray(imageUrls, Mainimageindex);
+        console.log('resultresultresult', result.selectedUrl);
+        console.log('resultresultresultresultresult', result.remainingUrls);
+
+
+        let remainingUrls = result.remainingUrls
+        let selectedUrl = result.selectedUrl
 
 
         console.log('trimmedValuetrimmedValuetrimmedValue', value, trimmedValue, parseFloat(trimmedValue));
-        const result = await UpdateItem({
+        const resultuploaditem = await UpdateItem({
           variables: {
             id: previousdata?.id,
             item: {
               askingPrice: parseFloat(trimmedValue),
-              categories: [],
+              categories: [category?.value],
               description: Discreption,
               title: title,
-              imageUrls: imageUrls,
+              imageUrls: remainingUrls,
+              mainImageUrl: selectedUrl,
               latitude: Location?.latitude,
               longitude: Location?.longitude,
               isSwapOnly: cashTogle,
             },
           },
         });
-        console.log('resultresultresult', result);
+        console.log('resultresultresult', resultuploaditem);
         setLoading(false);
 
-        if (result) {
+        if (resultuploaditem) {
           SuccessToast({
             title: 'Congratulation',
             text: 'Item updated Successfully ',
@@ -292,7 +299,7 @@ const Edititem = props => {
   //     console.log('errorerror', error);
   //   }
   // };
-  const selecFromgalery = () => {
+  const selecFromgalery = async () => {
     try {
       ImagePicker.openPicker({
         mediaType: 'photo',
@@ -314,7 +321,10 @@ const Edititem = props => {
 
           // Find the first index with an empty image in updatedArray
           const startIndex = updatedArray.findIndex((item) => !item.image);
-
+          console.log('startIndexstartIndex', startIndex);
+          let nonEmptyImageArray = updatedArray.filter((item) => item.image != '');
+          console.log('nonEmptyImageArray:', nonEmptyImageArray);
+          setImageindex(Math.min(nonEmptyImageArray.length, 6));
           if (startIndex !== -1) {
             // Iterate over the selected images and update the array starting from startIndex
             images.forEach((allimages, index) => {
@@ -329,16 +339,14 @@ const Edititem = props => {
                 };
               }
             });
-
+            console.log('updatedArray: issssss', updatedArray);
             // Get the length of the updated array with non-empty images
-            let nonEmptyImageArray = updatedArray.filter((item) => item.image !== '');
-            console.log('nonEmptyImageArray:', nonEmptyImageArray);
 
             // Set the array state with the updated array
             setArray(updatedArray);
 
             // Update the image index based on the length of non-empty images (up to a maximum of 6)
-            setImageindex(Math.min(nonEmptyImageArray.length, 6));
+
           }
 
           console.log('Updated array:', updatedArray);
@@ -601,7 +609,7 @@ const Edititem = props => {
         <DropdownPinker
 
           setValue={setcategory}
-          data={categoryData}
+          data={dropdownData}
           value={category}
 
         />
