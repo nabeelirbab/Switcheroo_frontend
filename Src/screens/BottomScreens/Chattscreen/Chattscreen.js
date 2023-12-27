@@ -3,7 +3,7 @@ import { GiftedChat } from 'react-native-gifted-chat';
 import Container from '../../../components/Container';
 import styles from './styles';
 import Header, { HeaderleftImage } from '../../../components/Header';
-import { Alert, Modal, View, TouchableWithoutFeedback, TouchableOpacity, TextInput } from 'react-native';
+import { Alert, Modal, View, TouchableWithoutFeedback, TouchableOpacity, TextInput, Image } from 'react-native';
 import Button from '../../../components/Button';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from '../../../components/Responsiveui';
 import ResponsiveText from '../../../components/ResponsiveText';
@@ -15,6 +15,7 @@ import moment from 'moment/moment';
 import { HubConnectionBuilder } from '@microsoft/signalr';
 import Colors from '../../../theme/colors';
 import { SuccessToast } from '../../../components/SuccessToast';
+import Images from '../../../components/Images';
 
 
 const CHattscreen = (props) => {
@@ -310,11 +311,20 @@ const CHattscreen = (props) => {
 
             <CustomModal modalVisible={userRepotDetailModal} setModalVisible={setuserRepotDetailModal}>
                 <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+
+                    <TouchableOpacity onPress={() => setuserRepotDetailModal(false)} style={{ padding: 10, alignSelf: 'flex-end', position: 'absolute', top: -wp(9), right: wp(-5) }}>
+                        <Image
+                            source={Images.close}
+                            style={{ width: wp(8), height: wp(8) }}
+                        />
+
+                    </TouchableOpacity>
                     <TextInput
                         placeholder="Title of report"
                         value={title}
                         onChangeText={text => settitle(text)}
-                        style={styles.input2}
+                        style={{ ...styles.input2, marginTop: hp(2) }}
+
                         placeholderTextColor={Colors.graytext}
 
                     />

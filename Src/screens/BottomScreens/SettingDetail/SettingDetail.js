@@ -45,6 +45,10 @@ const SettingDetail = props => {
     data?.mobile ? data?.mobile?.slice(0, 2) : '',
   );
 
+  console.log(' data?.mobile ? data?.mobile?.slice(0, 2)', isNumber(CountryCOde));
+  function isNumber(value) {
+    return !isNaN(value) && !isNaN(parseFloat(value));
+  }
   const phoneInput = useRef(null);
   const [updateUserDistance] = UpdateDistance();
   const [UpdateUsergender] = UpdateGender();
@@ -454,7 +458,7 @@ const SettingDetail = props => {
           <PhoneInput
             ref={phoneInput}
             defaultValue={phonenumber}
-            defaultCode={data?.mobile ? data?.mobile?.slice(0, 2) : 'US'}
+            defaultCode={isNumber(CountryCOde) ? 'US' : data?.mobile?.slice(0, 2) ?? 'US'}
             layout="first"
             onChangeText={text => {
               setphonenumber(text);
@@ -470,7 +474,7 @@ const SettingDetail = props => {
             containerStyle={styles.phoneinput}
             textContainerStyle={styles.phonetext}
             withShadow
-            autoFocus
+            autoFocus={false}
           />
         </View>
       )}

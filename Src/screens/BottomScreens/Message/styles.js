@@ -72,6 +72,13 @@ export const styles = StyleSheet.create({
         width: wp(1.5),
         height: wp(4)
     },
+    dotes: {
+        backgroundColor: Colors.grentext,
+        width: wp(3),
+        height: wp(3),
+        borderRadius: wp(3),
+        right: 4
+    },
 
     inputview: {
         padding: 2,
@@ -102,7 +109,8 @@ export const styles = StyleSheet.create({
         justifyContent: 'space-between',
         borderColor: `${Colors.black}20`,
         borderLeftWidth: 0,
-        borderRightWidth: 0
+        borderRightWidth: 0,
+        paddingRight: wp(10)
     },
     imageView: {
         flexDirection: 'row',
@@ -115,17 +123,24 @@ export const styles = StyleSheet.create({
         borderRadius: wp(10)
     },
     targetitem: {
-        width: wp(10),
-        height: wp(10),
+        width: wp(13),
+        height: wp(13),
         borderRadius: wp(10),
-        marginTop: hp(1)
+        // marginTop: hp(1)
 
 
     },
     nametxt: {
-        fontSize: 16,
+        fontSize: 14,
         fontFamily: Fonts.Fontsmedeum,
-        color: Colors.black
+        color: Colors.black,
+        // backgroundColor: "red",
+        // width: wp(32)
+    },
+    swapwith: {
+        width: wp(17),
+        height: wp(4),
+        marginHorizontal: 5
     },
     lastmessage: {
         fontSize: 14,
@@ -136,7 +151,11 @@ export const styles = StyleSheet.create({
         marginLeft: wp(2),
         alignItems: 'flex-start',
         justifyContent: "center",
-        width: wp(40)
+        width: wp(75),
+        flexDirection: 'row',
+        // alignItems: 'center',
+        justifyContent: "flex-start"
+        // backgroundColor: 'red'
     },
     badge: {
         width: 10,
@@ -170,7 +189,7 @@ export const styles = StyleSheet.create({
     },
     buttonText: {
         fontSize: 16,
-        color: 'red',
+        color: '#FF6961',
 
     },
     buttonTextcancel: {

@@ -36,7 +36,8 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.backgroundColor,
     borderRadius: 20,
     padding: 20,
-    paddingVertical: 30,
+    paddingTop: 30,
+    paddingBottom: 15,
 
     width: wp(90),
     alignItems: 'center',

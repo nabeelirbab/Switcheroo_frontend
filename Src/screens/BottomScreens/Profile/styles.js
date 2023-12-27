@@ -197,7 +197,7 @@ export const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '500',
     color: `${Colors.black}`,
-    // backgroundColor:'red',
+    // backgroundColor:'#FF6961',
     width: wp(55),
     textAlign: 'left',
   },
@@ -228,12 +228,12 @@ export const styles = StyleSheet.create({
 
   buttonText: {
     fontSize: 16,
-    color: 'red',
+    color: '#FF6961',
   },
   deletebtn: {
     marginTop: hp(2),
-    backgroundColor: 'red',
-    borderColor: '#c21f0a',
+    backgroundColor: '#FF6961',
+    borderColor: '#b82c2c',
     width: wp(45),
     height: hp(5)
   },

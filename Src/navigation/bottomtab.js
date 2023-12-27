@@ -224,7 +224,7 @@ const styles = StyleSheet.create({
     top: 2
   },
   backgroundBadge: {
-    backgroundColor: 'red',
+    backgroundColor: '#FF6961',
     alignItems: "center",
     justifyContent: "center",
     position: 'absolute',

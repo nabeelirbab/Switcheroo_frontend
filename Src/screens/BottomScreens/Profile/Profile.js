@@ -648,6 +648,12 @@ const Profile = props => {
 
       <CustomModal modalVisible={ContactUsmodal} setModalVisible={setContactUsmodal}>
         <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+          <TouchableOpacity onPress={() => setContactUsmodal(false)} style={{ padding: 10, alignSelf: 'flex-end', position: 'absolute', top: -wp(10), right: wp(-6) }}>
+            <Image
+              source={Images.close}
+              style={{ width: wp(8), height: wp(8) }}
+            />
+          </TouchableOpacity>
           <TextInput
             placeholder="Name"
             value={name}

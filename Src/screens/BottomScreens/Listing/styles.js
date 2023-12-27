@@ -36,7 +36,7 @@ export const styles = StyleSheet.create({
   },
   reciveMain: {
     marginTop: hp(2),
-    borderBottomWidth: 2,
+    // borderBottomWidth: 2,
     paddingBottom: hp(1),
     borderColor: `${Colors.graytext}30`,
   },
@@ -53,7 +53,7 @@ export const styles = StyleSheet.create({
     paddingVertical: 5,
     alignItems: 'center',
     flexDirection: 'row',
-    borderBottomWidth: 1,
+    // borderBottomWidth: 1,
     borderColor: `${Colors.graytext}30`,
     justifyContent: 'space-between',
   },
@@ -61,21 +61,22 @@ export const styles = StyleSheet.create({
     width: wp(20),
     borderRadius: 20,
     height: hp(3),
-    backgroundColor: 'red',
+    backgroundColor: '#FF6961',
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 2,
-    borderColor: '#c21f0a'
+    borderColor: '#b82c2c',
+    // paddingBottom: wp(2)
   },
   rejectBtn: {
     width: wp(42),
     borderRadius: 20,
     height: hp(4),
-    backgroundColor: 'red',
+    backgroundColor: '#FF6961',
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 2,
-    borderColor: '#c21f0a'
+    borderColor: '#b82c2c'
   },
   acceptBtn: {
     width: wp(42),
@@ -85,16 +86,22 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 2,
-    borderColor: Colors.grentext
+    borderColor: '#278c78'
   },
   deleteBtntxt: {
     fontSize: 14,
     color: Colors.white,
     alignContent: 'center',
-    verticalAlign: 'middle',
     textAlign: 'center',
     textAlignVertical: 'center',
-    marginBottom: 1,
+    marginTop: wp(-0.3)
+  },
+  aceptreject: {
+    fontSize: 14,
+    color: Colors.white,
+    alignContent: 'center',
+    textAlign: 'center',
+    textAlignVertical: 'center',
   },
   rate: {
     fontSize: 14,
@@ -166,7 +173,7 @@ export const styles = StyleSheet.create({
   btn: {
     height: '100%',
     width: wp(20),
-    backgroundColor: 'red',
+    backgroundColor: '#FF6961',
     borderLeftWidth: 1,
     borderRightWidth: 1,
     borderColor: '#fff',

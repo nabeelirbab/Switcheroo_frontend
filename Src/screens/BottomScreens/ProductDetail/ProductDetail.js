@@ -80,8 +80,8 @@ const ProductDetail = props => {
 
         }
         else {
-
-            const response = await reportAnitem(previousdata?.targetItem.id, title, Detail)
+            console.log('previousdata?.targetItem.id, title, Detailpreviousdata?.targetItem.id, title, Detail', previousdata, title, Detail);
+            const response = await reportAnitem(previousdata?.targetItem[0] ? previousdata?.targetItem[0].id : previousdata?.targetItem.id, title, Detail)
             console.log('responseresponseresponse offfffffff report', response);
             if (response?.data.createItemComplaint) {
                 setDetail(''),
@@ -323,48 +323,52 @@ const ProductDetail = props => {
                         {Location}
                     </ResponsiveText>
                 </View>
-                <Button
-                    title={'Send a Counter Offer'}
-                    onPress={() => setCounterOfferModal(true)}
+
+                {props?.route?.params?.from == 'recive' && <Button
+                    title={'Accept'}
+                    onPress={() => handleAcceptMutation(previousdata)}
                     titleStyle={{}}
                     btnContainer={{
-
+                        backgroundColor: Colors.secondaryColor,
                         marginTop: hp(3),
+                        borderColor: '#278c78',
                     }}
 
                 />
-
+                }
                 {props?.route?.params?.from == 'made' &&
                     <Button
                         title={'Delete Offer'}
                         onPress={() => handleMadeDelte(previousdata)}
                         titleStyle={{}}
-                        btnContainer={{ backgroundColor: "red", marginTop: hp(6), borderColor: 'darkred', }}
+                        btnContainer={{ backgroundColor: "#FF6961", marginTop: hp(6), borderColor: '#b82c2c', }}
 
                     />}
 
-                {props?.route?.params?.from == 'recive' && <View style={styles.rowView}>
+                {props?.route?.params?.from == 'recive' && <View style={{ ...styles.rowView, width: wp(94) }}>
+
                     <Button
-                        title={'Accept'}
-                        onPress={() => handleAcceptMutation(previousdata)}
+                        title={'Counter Offer'}
+                        onPress={() => setCounterOfferModal(true)}
                         titleStyle={{}}
                         btnContainer={{
-                            backgroundColor: Colors.secondaryColor, width: wp(45),
+                            width: wp(43),
                             marginTop: hp(3),
-                            borderColor: Colors.grentext,
                         }}
 
                     />
+
+
                     <Button
                         title={'Reject'}
                         onPress={() => handleRejectMutation(previousdata)}
                         titleStyle={{}}
                         btnContainer={{
-                            backgroundColor: "red",
-                            borderColor: '#c21f0a',
+                            backgroundColor: "#FF6961",
+                            borderColor: '#b82c2c',
 
                             marginTop: hp(3),
-                            width: wp(45)
+                            width: wp(43)
                         }}
 
                     />
@@ -384,11 +388,13 @@ const ProductDetail = props => {
                 }}>
                 <TouchableWithoutFeedback onPress={() => setReportItem(false)}>
                     <View style={styles.modalContainer}>
+
                         <View style={styles.modalContent}>
+
                             <TouchableOpacity
                                 style={styles.modlbtn}
                                 hitSlop={styles.hitslop}
-                                onPress={() => { setItemRepotDetailModal(true), console.log('report userrrrrrr') }}>
+                                onPress={() => { setItemRepotDetailModal(true), setReportItem(false) }}>
                                 <ResponsiveText style={styles.buttonText}>
                                     Report Item
                                 </ResponsiveText>
@@ -408,11 +414,18 @@ const ProductDetail = props => {
 
             <CustomModal modalVisible={ItemRepotDetailModal} setModalVisible={setItemRepotDetailModal}>
                 <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                    <TouchableOpacity onPress={() => setItemRepotDetailModal(false)} style={{ padding: 10, alignSelf: 'flex-end', position: 'absolute', top: -wp(9), right: wp(-5) }}>
+                        <Image
+                            source={Images.close}
+                            style={{ width: wp(8), height: wp(8) }}
+                        />
+
+                    </TouchableOpacity>
                     <TextInput
                         placeholder="Title of report"
                         value={title}
                         onChangeText={text => settitle(text)}
-                        style={styles.input}
+                        style={{ ...styles.input, marginTop: hp(2) }}
                         placeholderTextColor={Colors.graytext}
 
                     />
@@ -427,7 +440,7 @@ const ProductDetail = props => {
 
                     />
                     <Button title="Report this item"
-                        btnContainer={styles.contactUs}
+                        btnContainer={{ ...styles.contactUs, marginTop: 0 }}
                         onPress={() => { reportItemHandle() }} />
                 </View>
             </CustomModal>
@@ -436,6 +449,13 @@ const ProductDetail = props => {
 
             <CustomModal modalVisible={CounterOfferModal} setModalVisible={setCounterOfferModal}>
                 <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                    <TouchableOpacity onPress={() => setCounterOfferModal(false)} style={{ padding: 10, alignSelf: 'flex-end', position: 'absolute', top: -wp(11), right: wp(-5) }}>
+                        <Image
+                            source={Images.close}
+                            style={{ width: wp(8), height: wp(8) }}
+                        />
+
+                    </TouchableOpacity>
                     <TextInput
                         placeholder="Enter counter offer $ value"
                         value={counterOfferValue}

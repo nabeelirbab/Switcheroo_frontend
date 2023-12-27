@@ -76,6 +76,23 @@ export const getChatlist = () => {
             mobile
             username
         }
+         sourceItem {
+            askingPrice
+            categories
+            createdByUserId
+            description
+            flexibilityRange
+            id
+            imageUrls
+            isFlexible
+            isHidden
+            isSwapOnly
+            latitude
+            longitude
+            mainImageUrl
+            title
+            updatedByUserId
+        }
     }
       }
     `
@@ -448,6 +465,7 @@ export const UserNameUpdate = (firstName, lastName) => {
 };
 
 export const createItem = async (itemData) => {
+  const imageUrlsString = itemData.imageUrls.map(url => `"${url}"`).join(', ');
   const query = `
     mutation CreateItem {
       createItem(
@@ -455,7 +473,7 @@ export const createItem = async (itemData) => {
           askingPrice: ${itemData.askingPrice}
           categories: "${itemData.categories}"
           description: "${itemData.description}"
-          imageUrls: "${itemData.imageUrls}"
+          imageUrls: [${imageUrlsString}]
           isSwapOnly: ${itemData.isSwapOnly}
           latitude: ${itemData.latitude}
           longitude: ${itemData.longitude}
@@ -480,6 +498,8 @@ export const createItem = async (itemData) => {
       }
     }
   `;
+
+  console.log('queryqueryqueryqueryqueryquery', itemData, query);
   return axios.post(GRAPHQL_ENDPOINT, {
     query: query
   }, {
@@ -532,7 +552,8 @@ export const reportAnitem = async (itemId, title, description) => {
       createItemComplaint(
         complaint: {
           title: "${title}",
-          description: "${description}"
+          description: "${description}",
+          isSolved:false
         }
         itemId: "${itemId}"
       ) {

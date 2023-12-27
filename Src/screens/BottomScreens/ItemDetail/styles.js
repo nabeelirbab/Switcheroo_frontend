@@ -49,7 +49,7 @@ export const styles = StyleSheet.create({
     textAlign: "center",
     textAlignVertical: "center",
     alignSelf: "center",
-    // backgroundColor:'red',
+    // backgroundColor:'#FF6961',
     marginTop: Platform.OS == 'android' ? 2 : 0
 
   },
@@ -60,7 +60,7 @@ export const styles = StyleSheet.create({
     textAlign: "center",
     textAlignVertical: "center",
     alignSelf: "center",
-    // backgroundColor:'red',
+    // backgroundColor:'#FF6961',
     marginTop: Platform.OS == 'android' ? 2 : 0
 
   },
@@ -198,7 +198,7 @@ export const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 16,
-    color: 'red',
+    color: '#FF6961',
 
   },
   buttonTextcancel: {

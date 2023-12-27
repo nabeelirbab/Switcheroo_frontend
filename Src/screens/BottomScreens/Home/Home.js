@@ -124,7 +124,6 @@ const Home = props => {
   const [updateFcm] = UpdateUserFcm();
 
   useEffect(() => {
-
     getCategory().then(res => {
 
       console.log('resoponseeeee', res)
@@ -197,6 +196,10 @@ const Home = props => {
 
 
   useEffect(() => {
+    SuccessToast({
+      title: 'Congratulation',
+      text: 'Request sent successfully ',
+    });
     setselectedItem(checkSelectedTitle ? checkSelectedTitle : {})
     console.log(myitemdata, 'myitemdataaaa===>>>>>>>', myItemData?.me?.items?.length);
     setmyItemData(myitemdata ?? []);
@@ -292,7 +295,7 @@ const Home = props => {
           if (res) {
             SuccessToast({
               title: 'Congratulation',
-              text: 'Dissmiss item 👎',
+              text: 'Dissmiss item',
             });
           }
         })
@@ -431,13 +434,14 @@ const Home = props => {
           longitude
           latitude
           isSwapOnly
+          categories
         }
         hasNextPage
         totalCount
       }
     }
   `;
-        console.log('itemiditemiditemid', itemid);
+        console.log('itemiditemiditemid', selectedCategary, itemid);
         const variables = {
           limit: 100,
           itemId: itemid?.id,
@@ -446,7 +450,7 @@ const Home = props => {
           latitude: itemid?.latitude,
           longitude: itemid?.longitude,
           inMiles: true,
-          categories: [],
+          categories: selectedCategary,
         };
 
         console.log('====================================');
@@ -531,6 +535,7 @@ const Home = props => {
 
           title={"Switch With"}
           btnContainer={styles.rowButton}
+          titleStyle={{ marginTop: 3 }}
           onPress={() => {
             getAllmyProdunt(), setchosemodal(!chosemodal);
           }}
@@ -545,6 +550,8 @@ const Home = props => {
 
           title={"Show First"}
           btnContainer={styles.showfirstbuton}
+          titleStyle={{ marginTop: 3 }}
+
           onPress={() => {
             setcateGaryModal(!cateGaryModal);
           }}
@@ -701,6 +708,13 @@ const Home = props => {
         }}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
+            <TouchableOpacity onPress={() => setchosemodal(false)} style={{ padding: 10, alignSelf: 'flex-end', position: 'absolute', top: -wp(2), right: wp(-2) }}>
+              <Image
+                source={Images.close}
+                style={{ width: wp(8), height: wp(8) }}
+              />
+
+            </TouchableOpacity>
             <ResponsiveText style={styles.modltxt}>
               {`Select an item you'd like to swap`}
             </ResponsiveText>
@@ -919,9 +933,9 @@ const Home = props => {
 
           <Button
             title={'Done'}
-            btnContainer={styles.offerbtn}
+            btnContainer={{ ...styles.offerbtn, marginTop: hp(1.5), marginBottom: hp(3), }}
 
-            onPress={() => { setcateGaryModal(false) }}
+            onPress={() => { GetItemsFilter(selectedItem), setcateGaryModal(false) }}
           />
         </View>
       </CustomModal>

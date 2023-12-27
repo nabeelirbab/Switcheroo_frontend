@@ -3,15 +3,21 @@ import { View, StyleSheet } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from './Responsiveui';
 import Colors from '../theme/colors';
+import { useIsFocused } from '@react-navigation/native';
 
 const DropdownPinker = ({ setValue, data, value }) => {
     // State to manage dropdown value
     const [dropdownValue, setDropdownValue] = useState(value);
 
     // Update dropdown value when defaultValue changes
+
+    console.log('====================================');
+
+    console.log('====================================');
     useEffect(() => {
         setDropdownValue(value);
-    }, [value]);
+        console.log('valuevaluevalue', value);
+    }, [value, useIsFocused()]);
     return (
         <View style={{ alignSelf: "center", backgroundColor: '#fff', alignItems: "center" }}>
             <Dropdown

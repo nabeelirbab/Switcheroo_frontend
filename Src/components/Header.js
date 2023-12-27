@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
     width: wp(8),
     height: wp(8),
     alignSelf: 'center',
-    // backgroundColor:'red'
+    // backgroundColor:'#FF6961'
   },
   leftarrow2: {
     // tintColor:Colors.black,

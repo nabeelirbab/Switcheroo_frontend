@@ -5,7 +5,7 @@ import styles from './styles'
 import Images from '../../../components/Images'
 import ResponsiveText from '../../../components/ResponsiveText'
 import Colors from '../../../theme/colors'
-import { heightPercentageToDP as hp } from '../../../components/Responsiveui'
+import { heightPercentageToDP as hp, widthPercentageToDP } from '../../../components/Responsiveui'
 import { useIsFocused } from '@react-navigation/native'
 import { ComplaintAgainstuser, getChatlist, markMesegecountzero, unMatchOffer } from '../../../Apis/Apis'
 import moment from 'moment/moment';
@@ -114,7 +114,7 @@ const Message = (props) => {
         <View style={styles.imageView}>
           <TouchableOpacity hitSlop={styles.hitslop} onPress={() => props.navigation.navigate('ProductDetail', {
             item: item,
-            from: 'recive'
+            from: 'Message'
           })}>
 
             <Image
@@ -124,22 +124,35 @@ const Message = (props) => {
 
           </TouchableOpacity>
 
+          <View>
 
-          <View style={styles.messagetext}>
+            <View style={styles.messagetext}>
+              <ResponsiveText style={styles.nametxt}>
+                {item?.targetItem[0]?.title}
+              </ResponsiveText>
+
+
+              <Image style={styles.swapwith}
+                source={Images.logoBranding}
+              />
+
+              <ResponsiveText style={styles.nametxt}>
+                {item?.sourceItem[0]?.title}
+              </ResponsiveText>
+
+
+              {/* <ResponsiveText numberOfLines={1} style={styles.lastmessage}>
+                {item?.messageText}
+              </ResponsiveText> */}
+            </View>
             <ResponsiveText style={styles.nametxt}>
-              {item?.targetItem[0]?.title + `(${item?.targetUser[0].firstName})`}
-            </ResponsiveText>
-
-
-            <ResponsiveText numberOfLines={1} style={styles.lastmessage}>
-              {item?.messageText}
+              {`  (${item?.targetUser[0].firstName})`}
             </ResponsiveText>
           </View>
+
         </View>
 
-        {/* {item?.createdAt && <ResponsiveText style={styles.lastmessage}>
-          {moment(item?.createdAt).format('hh:mm A')}
-        </ResponsiveText>} */}
+        <View style={styles.dotes} />
         <TouchableOpacity onPress={() => { setSelectedItemData(item), setreportUser(true) }} hitSlop={styles.hitslop}>
           <Image
             source={Images.verticaldot}
@@ -235,11 +248,19 @@ const Message = (props) => {
       </Modal>
       <CustomModal modalVisible={userRepotDetailModal} setModalVisible={setuserRepotDetailModal}>
         <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+          <TouchableOpacity onPress={() => setuserRepotDetailModal(false)} style={{ padding: 10, alignSelf: 'flex-end', position: 'absolute', top: -widthPercentageToDP(9), right: widthPercentageToDP(-5) }}>
+            <Image
+              source={Images.close}
+              style={{ width: widthPercentageToDP(8), height: widthPercentageToDP(8) }}
+            />
+
+          </TouchableOpacity>
           <TextInput
             placeholder="Title of report"
             value={title}
+
             onChangeText={text => settitle(text)}
-            style={styles.input2}
+            style={{ ...styles.input2, marginTop: hp(2) }}
             placeholderTextColor={Colors.graytext}
 
           />

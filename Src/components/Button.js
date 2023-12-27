@@ -55,10 +55,11 @@ const styles = StyleSheet.create({
   title: {
     alignSelf: 'center',
     color: Colors.white,
-    margin: 0,
     fontSize: 16,
     borderWidth: 0,
     textAlign: 'center',
+    textAlignVertical: 'center',
+    verticalAlign: 'middle'
   },
 });
 export default Button;

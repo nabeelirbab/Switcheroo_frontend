@@ -220,14 +220,14 @@ const Listing = props => {
             <TouchableOpacity
               onPress={() => handleAcceptMutation(item)}
               style={styles.acceptBtn}>
-              <ResponsiveText style={styles.deleteBtntxt}>
+              <ResponsiveText style={styles.aceptreject}>
                 {'Accept'}
               </ResponsiveText>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => handleRejectMutation(item)}
               style={styles.rejectBtn}>
-              <ResponsiveText style={styles.deleteBtntxt}>
+              <ResponsiveText style={styles.aceptreject}>
                 {'Reject'}
               </ResponsiveText>
             </TouchableOpacity>

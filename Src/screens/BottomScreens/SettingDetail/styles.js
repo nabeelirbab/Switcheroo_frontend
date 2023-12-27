@@ -154,7 +154,7 @@ export const styles = StyleSheet.create({
   label: {
     fontSize: 18,
     marginBottom: 8,
-    color: 'red'
+    color: '#FF6961'
   },
   radioButton: {
     flexDirection: 'row',

@@ -16,7 +16,7 @@ export const styles = StyleSheet.create({
     },
     crossimage: {
         width: wp(6), height: wp(6),
-        // backgroundColor:'red',
+        // backgroundColor:'#FF6961',
         alignItems: "center",
         justifyContent: "center",
         position: "absolute",
@@ -183,7 +183,7 @@ export const styles = StyleSheet.create({
 
     buttonText: {
         fontSize: 16,
-        color: 'red',
+        color: '#FF6961',
 
     },
     buttonTextcancel: {

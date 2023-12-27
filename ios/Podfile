@@ -37,6 +37,7 @@ target 'Switchero' do
     # :hermes_enabled => flags[:hermes_enabled], disable and herms enable false
     :hermes_enabled => flags[false],
     :fabric_enabled => flags[:fabric_enabled],
+
     # Enables Flipper.
     #
     # Note that if you have use_frameworks! enabled, Flipper will not work and
@@ -45,6 +46,7 @@ target 'Switchero' do
     # An absolute path to your application root.
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
+pod 'GoogleUtilities', :modular_headers => true
 
   target 'SwitcheroTests' do
     inherit! :complete

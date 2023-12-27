@@ -104,7 +104,7 @@ export const styles = StyleSheet.create({
 
     buttonText: {
         fontSize: 16,
-        color: 'red',
+        color: '#FF6961',
 
     },
     buttonTextcancel: {

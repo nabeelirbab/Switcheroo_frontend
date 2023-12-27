@@ -46,7 +46,7 @@ export const styles = StyleSheet.create({
     textAlign: "center",
     textAlignVertical: "center",
     alignSelf: "center",
-    // backgroundColor:'red',
+    // backgroundColor:'#FF6961',
     marginTop: Platform.OS == 'android' ? 2 : 0
 
   },
@@ -57,7 +57,7 @@ export const styles = StyleSheet.create({
     textAlign: "center",
     textAlignVertical: "center",
     alignSelf: "center",
-    // backgroundColor:'red',
+    // backgroundColor:'#FF6961',
     marginTop: Platform.OS == 'android' ? 2 : 0
 
   },
@@ -104,21 +104,24 @@ export const styles = StyleSheet.create({
     borderBottomWidth: 0.5,
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: wp(2),
+    // paddingVertical: wp(2),
     borderColor: `${Colors.black}20`,
     backgroundColor: `${Colors.white}80`,
     flexDirection: "row",
-    marginHorizontal: wp(3)
+    marginHorizontal: wp(3),
+    // backgroundColor: 'red',
+    paddingTop: hp(1)
+
 
   },
   rowButton: {
 
     width: wp(30),
-    height: hp(4.6)
+    height: hp(4.5),
   },
   showfirstbuton: {
     backgroundColor: Colors.secondaryColor,
-    borderColor: Colors.grentext,
+    borderColor: '#278c78',
     width: wp(30),
     height: hp(4.6)
   },
@@ -126,6 +129,8 @@ export const styles = StyleSheet.create({
     color: Colors.btncolor,
     fontSize: 16,
     fontWeight: '500',
+    // backgroundColor: 'red',
+    marginBottom: wp(2.2)
 
 
   },
@@ -213,16 +218,16 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     height: hp(80),
     // justifyContent: "center",
-    // backgroundColor: "red"
+    // backgroundColor: "#FF6961 "
   },
   cashtext: {
     fontSize: 18,
     fontFamily: Fonts.FontssemiBold,
-    color: Colors.black
+    color: Colors.black,
   },
   categoryMain: {
-    marginTop: hp(2),
-    alignItems: "center",
+    marginTop: hp(1),
+    // backgroundColor: 'red'
 
   },
   crosbtn: {
@@ -319,7 +324,7 @@ export const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 16,
-    color: 'red',
+    color: '#FF6961',
 
   },
   buttonTextcancel: {

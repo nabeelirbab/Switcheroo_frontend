@@ -31,6 +31,7 @@ import { heightPercentageToDP as hp } from '../../../components/Responsiveui';
 import { useDispatch } from 'react-redux';
 import { Savematchingitem } from '../../../redux/actions/userDataAction';
 import DropdownPinker from '../../../components/DropdownPicker';
+import { useIsFocused } from '@react-navigation/native';
 
 
 
@@ -93,6 +94,7 @@ const Additem = props => {
 
 
   useEffect(() => {
+    setcategory('')
     getCategory().then(res => {
 
       console.log('resoponseeeee', res)
@@ -108,7 +110,7 @@ const Additem = props => {
       console.log('eror get category', eror)
     })
     getCurrentLocation();
-  }, []);
+  }, [useIsFocused()]);
   let titlemaxlength = 100;
   let discreptionemaxlength = 500;
   const getCurrentLocation = async () => {
@@ -127,7 +129,7 @@ const Additem = props => {
     }
 
     const selectedUrl = urls[index];
-    const remainingUrls = [...urls.slice(0, index), ...urls.slice(index + 1)].map((url) => (url.toString()));
+    const remainingUrls = [...urls.slice(0, index), ...urls.slice(index + 1)].map((url) => (url));
     console.log('remainingUrlsremainingUrls', remainingUrls);
     return { selectedUrl, remainingUrls };
   }
@@ -391,9 +393,6 @@ const Additem = props => {
     setArray(updatedArray);
   };
 
-  const onDragEnd = ({ data }) => {
-    setArray(data);
-  };
 
 
   const renderItem = ({ item, index }) => {
@@ -466,80 +465,6 @@ const Additem = props => {
   };
 
 
-
-  // const renderItem = ({ item, index }) => {
-  //   console.log('itemitem', item);
-  //   return (
-  //     <>
-  //       {item.loading == true ? (
-  //         <View style={styles.imageview}>
-  //           <ActivityIndicator size="large" color={Colors.btncolor} />
-  //         </View>
-  //       ) : (
-  //         <>
-  //           {index <= Imageindex ? (
-  //             <TouchableOpacity
-  //               onPress={() => {
-  //                 setselecteditem(item), setImagePickermodal(true);
-  //                 setSelectimageFormain(item.image == '' ? false : true)
-  //                 setpresIndex(index)
-  //               }}
-  //               style={styles.imageAddviewtouchable}>
-  //               {item.image == '' ? (
-  //                 <>
-  //                   <Image source={Images.addphoto} style={styles.addphoto} />
-  //                   <ResponsiveText style={styles.adphototxt}>
-  //                     {'Add Photo'}
-  //                   </ResponsiveText>
-  //                 </>
-  //               ) : (
-  //                 <>
-  //                   <TouchableOpacity
-  //                     onPress={() => handleItemRemove(item.id)}
-  //                     hitSlop={styles.hitslop}
-  //                     style={styles.crossimage}>
-  //                     <Image
-  //                       source={Images.close}
-  //                       style={styles.closeimg}
-  //                       resizeMode="cover"
-  //                     />
-  //                   </TouchableOpacity>
-  //                   <Image
-  //                     source={{ uri: 'data:image/jpeg;base64,' + item.image }}
-  //                     style={{ ...styles.image, borderWidth: index == Mainimageindex ? 2 : 0, borderColor: index == Mainimageindex ? Colors.btncolor : null }}
-  //                     resizeMode="cover"
-  //                   />
-  //                 </>
-  //               )}
-  //             </TouchableOpacity>
-  //           ) : (
-  //             <View style={{ ...styles.imageview, borderWidth: index == Mainimageindex ? 2 : 0, borderColor: index == Mainimageindex ? Colors.btncolor : null }}>
-  //               {item.image && (
-  //                 <>
-  //                   <TouchableOpacity
-  //                     onPress={() => handleItemRemove(item.id)}
-  //                     hitSlop={styles.hitslop}
-  //                     style={styles.crossimage}>
-  //                     <Image
-  //                       source={Images.close}
-  //                       style={styles.closeimg}
-  //                       resizeMode="cover"
-  //                     />
-  //                   </TouchableOpacity>
-  //                   <Image
-  //                     source={{ uri: item.image }}
-  //                     style={styles.image}
-  //                     resizeMode="cover"
-  //                   />
-  //                 </>
-  //               )}
-  //             </View>
-  //           )}
-  //         </>
-  //       )}
-  //     </>
-  //   );
-  // };
   return (
 
     <Container style={styles.container}>
@@ -583,7 +508,7 @@ const Additem = props => {
             }}
             maxLength={100}
             style={styles.input}
-            placeholderTextColor={'#4f4f4f'}
+            placeholderTextColor={'#9c9a9a'}
             multiline={true}
             placeholder="Add a title for your item"
           />
@@ -604,7 +529,7 @@ const Additem = props => {
             }}
             maxLength={12}
             style={{ ...styles.valueinput, height: hp(10) }}
-            placeholderTextColor={'#4f4f4f'}
+            placeholderTextColor={'#9c9a9a'}
             keyboardType="decimal-pad"
             multiline={true}
             placeholder="Give a fair value to your Item.The more accurate it is, the more you will match."
@@ -625,7 +550,7 @@ const Additem = props => {
               textAlign: 'left',
               textAlignVertical: 'top',
             }}
-            placeholderTextColor={'#4f4f4f'}
+            placeholderTextColor={'#9c9a9a'}
             multiline={true}
             placeholder="Add a description of the your item. The more description you add more chances of getting match."
           />
@@ -658,7 +583,7 @@ const Additem = props => {
             onFocus={() => setModalVisible(true)}
             onPressIn={() => setModalVisible(true)}
             style={styles.valueinput}
-            placeholderTextColor={'#4f4f4f'}
+            placeholderTextColor={'#9c9a9a'}
             placeholder="Location"
           />
         </View>
@@ -678,6 +603,7 @@ const Additem = props => {
             title={'Post item'}
             titleStyle={styles.btntitle}
             loading={Loading}
+            disabled={Loading}
             loadingColor={Colors.secondaryColor}
           />
         </View>

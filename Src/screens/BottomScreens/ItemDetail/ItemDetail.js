@@ -51,7 +51,7 @@ const ItemDetail = props => {
   const [title, settitle] = useState('');
 
 
-
+  console.log('swiperDataswiperDataswiperDataswiperData', swiperData);
   useEffect(() => {
 
     getAddressFromLatLng(previousdata?.latitude, previousdata?.longitude)
@@ -164,7 +164,7 @@ const ItemDetail = props => {
         // }).then((res)=>{
         // SuccessToast({
         //   title: 'Congratulation',
-        //   text: 'Dissmiss item 👎',
+        //   text: 'Dissmiss item',
         // });
         refrence?.swipeLeft()
         props.navigation.navigate('TabBarNav', {
@@ -480,11 +480,19 @@ const ItemDetail = props => {
 
       <CustomModal modalVisible={ItemRepotDetailModal} setModalVisible={setItemRepotDetailModal}>
         <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+          <TouchableOpacity onPress={() => setItemRepotDetailModal(false)} style={{ padding: 10, alignSelf: 'flex-end', position: 'absolute', top: -wp(9), right: wp(-5) }}>
+            <Image
+              source={Images.close}
+              style={{ width: wp(8), height: wp(8) }}
+            />
+
+          </TouchableOpacity>
           <TextInput
             placeholder="Title of report"
             value={title}
             onChangeText={text => settitle(text)}
-            style={styles.input}
+            style={{ ...styles.input, marginTop: hp(2) }}
+
             placeholderTextColor={Colors.graytext}
 
           />
@@ -499,7 +507,8 @@ const ItemDetail = props => {
 
           />
           <Button title="Report this item"
-            btnContainer={styles.contactUs}
+            btnContainer={{ ...styles.contactUs, marginTop: 0 }}
+
             onPress={() => reportItemHandle()} />
         </View>
       </CustomModal>
