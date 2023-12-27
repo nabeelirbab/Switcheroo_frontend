@@ -257,7 +257,7 @@ const ProductDetail = props => {
 
                 <View style={styles.secondview}>
 
-                    <ResponsiveText style={styles.textt}>
+                    <ResponsiveText numberOfLines={2} style={styles.textt}>
                         {previousdata?.targetItem[0] ? previousdata?.targetItem[0].title : previousdata?.targetItem?.title}
                     </ResponsiveText>
                 </View>

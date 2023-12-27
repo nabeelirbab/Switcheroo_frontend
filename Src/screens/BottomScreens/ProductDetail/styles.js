@@ -153,7 +153,8 @@ export const styles = StyleSheet.create({
     },
     textt: {
         fontSize: 16,
-        color: '#4f4f4f'
+        color: '#4f4f4f',
+        width: wp(60)
 
     },
     headingView: {

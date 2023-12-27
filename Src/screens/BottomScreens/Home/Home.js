@@ -628,7 +628,7 @@ const Home = props => {
                         />
                       </TouchableOpacity>
 
-                      <ResponsiveText style={styles.text}>
+                      <ResponsiveText numberOfLines={2} style={styles.text}>
                         {item?.title}
                       </ResponsiveText>
 

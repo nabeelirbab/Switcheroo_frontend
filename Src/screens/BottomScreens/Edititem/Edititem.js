@@ -233,7 +233,7 @@ const Edititem = props => {
             id: previousdata?.id,
             item: {
               askingPrice: parseFloat(trimmedValue),
-              categories: [category?.value],
+              categories: [category?.label],
               description: Discreption,
               title: title,
               imageUrls: remainingUrls,

@@ -350,7 +350,8 @@ const ItemDetail = props => {
                     <Image source={Images.swipeCircleCross} style={styles.crossIcon} />
                   </TouchableOpacity>
 
-                  <ResponsiveText style={styles.text}>{previousdata?.title}</ResponsiveText>
+                  <ResponsiveText numberOfLines={2} style={styles.text}>{previousdata?.title}
+                  </ResponsiveText>
 
                   <TouchableOpacity onPress={() => handleAccept(previousdata, 'accept')}>
                     <Image source={Images.swipeCircleTick} style={styles.tickIcon} />

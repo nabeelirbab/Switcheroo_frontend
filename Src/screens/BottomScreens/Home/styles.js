@@ -213,6 +213,7 @@ export const styles = StyleSheet.create({
   text: {
     color: Colors.white,
     fontSize: 20,
+    width: wp(60)
   },
   textOffer: {
     alignItems: "center",
