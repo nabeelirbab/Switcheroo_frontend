@@ -181,7 +181,7 @@ const Additem = props => {
 
         console.log({
           askingPrice: parseFloat(trimmedValue),
-          categories: [category?.value],
+          categories: [category?.label],
           description: Discreption,
           imageUrls: remainingUrls,
           isSwapOnly: cashTogle,
@@ -195,7 +195,7 @@ const Additem = props => {
 
         let response = await createItem({
           askingPrice: parseFloat(trimmedValue),
-          categories: [category?.value],
+          categories: [category?.label],
           description: Discreption,
           imageUrls: remainingUrls,
           isSwapOnly: cashTogle,

@@ -196,10 +196,10 @@ const Home = props => {
 
 
   useEffect(() => {
-    SuccessToast({
-      title: 'Congratulation',
-      text: 'Request sent successfully ',
-    });
+    // SuccessToast({
+    //   title: 'Congratulation',
+    //   text: 'Request sent successfully ',
+    // });
     setselectedItem(checkSelectedTitle ? checkSelectedTitle : {})
     console.log(myitemdata, 'myitemdataaaa===>>>>>>>', myItemData?.me?.items?.length);
     setmyItemData(myitemdata ?? []);
