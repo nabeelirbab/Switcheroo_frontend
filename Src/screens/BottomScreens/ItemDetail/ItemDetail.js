@@ -118,7 +118,7 @@ const ItemDetail = props => {
             } else {
               SuccessToast({
                 title: 'Congratulation',
-                text: 'Cash offer send ',
+                text: 'Cash offer sent',
               });
               props.navigation.navigate('TabBarNav', {
                 screen: 'Home'
@@ -156,73 +156,19 @@ const ItemDetail = props => {
 
       console.log('item', item, '\nitemid==', sourceItemId);
       if (type == 'dismiss') {
-        // dismissItem({
-        //   variables: {
-        //     sourceItemId: sourceItemId?.id,
-        //     targetItemId:  item.id,
-        //   },
-        // }).then((res)=>{
-        // SuccessToast({
-        //   title: 'Congratulation',
-        //   text: 'Dissmiss item',
-        // });
         refrence?.swipeLeft()
         props.navigation.navigate('TabBarNav', {
           screen: 'Home'
         })
-        // console.log('dismissItemdismissItem',res);
-        // if(res){
 
-        //   props.navigation.navigate('TabBarNav',{
-        //     screen:'Home'
-        //   })
-        // }
       }
 
-      // ).catch(error=>{
-      //   console.log('error from creating offer',error)
-      // });
-      // }
       else {
         refrence?.swipeRight()
         props.navigation.navigate('TabBarNav', {
           screen: 'Home'
         })
-        // createOffer({
-        //   variables: {
-        //     sourceItemId: sourceItemId?.id,
-        //     targetItemId: item.id,
-        //     sourceStatus: 1,
-        //     targeteStatus:1
-        //   },
-        // }).then((res)=>{
-        //   refrence?.swipeRight()
-        //   SuccessToast({
-        //     title: 'Congratulation',
-        //     text: 'Request send successfully ',
-        //   });
-        //   console.log('createOfferResponse',res);
-        //   if(res?.data?.createOffer?.targeteStatus==1){
-        //     props.navigation.navigate('MatchingSuccess',{
-        //       screenName:'Detail'
-        //     })
-        //   }
-        //   else{
 
-        //     props.navigation.navigate('TabBarNav',{
-        //       screen:'Home'
-        //     })
-        // //   }
-
-        // }
-
-        // ).catch(error=>{
-        //   console.log('error from creating offer',error)
-        //   ErrorToast({
-        //     title: 'Congratulation',
-        //     text: 'Some thing went wrong please try again',
-        //   });
-        // });
       }
 
 
@@ -249,70 +195,6 @@ const ItemDetail = props => {
       <ScrollView contentContainerStyle={{ paddingBottom: hp(10) }}>
 
         <View style={styles.swiperview}>
-
-          {/* <Swiper
-            ref={swiperRef}
-            cards={swiperData}
-            renderCard={(card, index) => {
-
-              return (
-                <ImageBackground resizeMode='cover' style={styles.backgroundImg}
-                  source={{ uri: card }}>
-
-                  {previousdata?.isSwapOnly ? (
-                    <TouchableOpacity
-                      activeOpacity={0.8}
-                      onPress={() => {
-                        setCashoffermodal(true);
-                      }}
-                      hitSlop={styles.hitslop}
-                      style={styles.dolorSign}>
-                      <ResponsiveText style={styles.dolorsigntxt}>
-                        {'$'}
-                      </ResponsiveText>
-                    </TouchableOpacity>
-                  ) : (
-                    <TouchableOpacity
-                      activeOpacity={1}
-                      hitSlop={styles.hitslop}
-                      style={styles.dolorSigndisable}>
-                      <ResponsiveText style={styles.dolorsigntxtblure}>
-                        {'$'}
-                      </ResponsiveText>
-                    </TouchableOpacity>
-                  )}
-
-                  <View style={styles.rowView}>
-                    <TouchableOpacity onPress={() => handleAccept(previousdata, 'dismiss')}>
-                      <Image source={Images.swipeCircleCross} style={styles.crossIcon} />
-                    </TouchableOpacity>
-
-                    <ResponsiveText style={styles.text}>{previousdata?.title}</ResponsiveText>
-
-                    <TouchableOpacity onPress={() => handleAccept(previousdata, 'accept')}>
-                      <Image source={Images.swipeCircleTick} style={styles.tickIcon} />
-                    </TouchableOpacity>
-                  </View>
-
-                </ImageBackground>
-              );
-            }}
-            onSwipedAll={() => { setswiperData([...previousdata.imageUrls, previousdata?.mainImageUrl]), setcardIndex(0), swiperRef?.current?.jumpToCardIndex(0) }}
-            cardIndex={cardIndex}
-            onSwiped={(index) => setcardIndex(index)}
-            cardVerticalMargin={0}
-            cardHorizontalMargin={0}
-            backgroundColor={'#fff'}
-            stackSeparation={0}
-            disableTopSwipe
-            disableBottomSwipe
-            disableRightSwipe={false}
-            disableLeftSwipe={false}
-            swipeBackCard
-            verticalSwipe={false}
-            stackSize={2}
-
-          /> */}
 
 
           <Carousel

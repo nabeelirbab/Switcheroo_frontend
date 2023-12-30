@@ -137,10 +137,24 @@ export const styles = StyleSheet.create({
         // backgroundColor: "red",
         // width: wp(32)
     },
+    sourcetitle: {
+        fontSize: 14,
+        fontFamily: Fonts.Fontsmedeum,
+        color: Colors.black,
+        // backgroundColor: "red",
+        width: wp(26)
+    },
+    targettitle: {
+        fontSize: 14,
+        fontFamily: Fonts.Fontsmedeum,
+        color: Colors.black,
+        // backgroundColor: "yellow",
+        width: wp(20)
+    },
     swapwith: {
         width: wp(17),
         height: wp(4),
-        marginHorizontal: 5
+        marginRight: 8
     },
     lastmessage: {
         fontSize: 14,

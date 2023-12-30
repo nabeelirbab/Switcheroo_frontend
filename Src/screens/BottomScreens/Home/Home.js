@@ -262,7 +262,7 @@ const Home = props => {
           } else {
             SuccessToast({
               title: 'Congratulation',
-              text: 'Request sent successfully ',
+              text: 'Request sent successfully',
             });
           }
         })
@@ -343,7 +343,7 @@ const Home = props => {
             } else {
               SuccessToast({
                 title: 'Congratulation',
-                text: 'Cash offer send ',
+                text: 'Cash offer sent',
               });
             }
             setCashoffermodal(false);

@@ -127,7 +127,7 @@ const Message = (props) => {
           <View>
 
             <View style={styles.messagetext}>
-              <ResponsiveText style={styles.nametxt}>
+              <ResponsiveText numberOfLines={1} style={styles.targettitle}>
                 {item?.targetItem[0]?.title}
               </ResponsiveText>
 
@@ -136,8 +136,8 @@ const Message = (props) => {
                 source={Images.logoBranding}
               />
 
-              <ResponsiveText style={styles.nametxt}>
-                {item?.sourceItem[0]?.title}
+              <ResponsiveText numberOfLines={1} style={styles.sourcetitle}>
+                {item?.sourceItem[0]?.title}heolloo jlajljlk jalkjldkjlk jaflkdjl
               </ResponsiveText>
 
 

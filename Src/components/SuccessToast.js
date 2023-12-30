@@ -1,82 +1,86 @@
 import Toast from 'react-native-toast-message';
 import { StyleSheet, Modal, View, TouchableWithoutFeedback } from 'react-native'
 import React from 'react'
+import ResponsiveText from './ResponsiveText';
+import { heightPercentageToDP, widthPercentageToDP } from './Responsiveui';
+import Colors from '../theme/colors';
+import { Fonts } from '../theme/Fonts';
+import { newEvents } from '../CustomEvents/CustomEvents';
 
 
 export const SuccessToast = (props) => {
-  Toast.show({
-    type: 'success',
-    text1: props?.text,           // Assuming title is passed in props
-    // text2: props?.text,             // Secondary text (optional)
-    position: 'top',
-    visibilityTime: 500,           // Duration the toast is visible, in milliseconds (0.5 second)
-    autoHide: true,                // Auto hide after visibilityTime
-    topOffset: 30,                 // Offset from top
-    bottomOffset: 40,              // Offset from bottom
-    textStyle: {
-      fontSize: 30,                // Adjust font size for longer text
-      textAlign: 'center',         // Ensure text is centered
-      fontWeight: 'bold',          // Make the text bold
-    },
-    fontSize: 22,
-    titleStyle: {
-      fontWeight: 'bold',          // Bold title
-      fontSize: 18,                // Slightly larger font for the title
-    },
-    style: {
-      width: '90%',                // Adjust width to fit longer text
-      padding: 10,
-      borderRadius: 25,            // Increased border radius for rounded corners
-      alignItems: 'center',        // Center align items
-    },
-    propsForBackground: {
-      numberOfLines: 5            // Allow multiple lines
-    },
-  });
+
+  newEvents.emit('Toastmessage', props?.text)
+
 }
 
 
-// export const SuccessTeast = ({ }) => {
+export const SuccessTeastModal = ({ modal, setModal, title }) => {
 
 
-//   const [modal setlogoutModal]
 
-//   return(
-//     <Modal
-//       animationType="slide"
-//       transparent={true}
-//       visible={logoutModal}
-//       onRequestClose={() => {
-//         setlogoutModal(false);
-//       }}>
-//       <TouchableWithoutFeedback onPress={() => setlogoutModal(false)}>
-//         <View style={styles.modalContainer}>
-//           <View style={styles.modalContent}>
-//             <TouchableOpacity
-//               style={styles.modlbtn}
-//               hitSlop={styles.hitslop}
-//               onPress={() => logoutPress()}>
-//               <ResponsiveText style={styles.buttonText}>
-//                 Sign Out
-//               </ResponsiveText>
-//             </TouchableOpacity>
+  setTimeout(() => {
+    setModal(false)
+  }, 1000);
 
-//             <TouchableOpacity
-//               style={styles.modlbtn}
-//               onPress={() => setlogoutModal(false)}>
-//               <ResponsiveText style={styles.buttonTextcancel}>
-//                 Cancel
-//               </ResponsiveText>
-//             </TouchableOpacity>
-//           </View>
-//         </View>
-//       </TouchableWithoutFeedback>
-//     </Modal>
-//   )
 
-// }
+  return (
+    <Modal
+      animationType="fade"
+      transparent={true}
+      visible={modal}
+      onRequestClose={() => {
+        setModal(false);
+      }}>
+      <TouchableWithoutFeedback onPress={() => setModal(false)}>
+        <View style={styles.modalContainerfirst}>
+          <View style={styles.modalContent}>
+            <ResponsiveText style={styles.textStyle}>
+              {title}
+            </ResponsiveText>
+          </View>
+        </View>
+      </TouchableWithoutFeedback>
+    </Modal>
+
+  )
+
+}
 
 
 
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+
+  modalContainerfirst: {
+    flex: 1,
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+
+  },
+  textStyle: {
+    fontSize: 16,
+    color: Colors.black,
+    fontFamily: Fonts.FontsExtraBold
+  },
+  modalContent: {
+    backgroundColor: '#dde4f0',
+    width: widthPercentageToDP(80),
+    padding: 20,
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
+    alignSelf: 'center',
+    marginTop: heightPercentageToDP(2),
+    borderRadius: 10,
+    // borderWidth: 2,
+    borderLeftWidth: 12,
+    borderRightWidth: 12,
+    borderLeftColor: Colors.primaryColor,
+    borderRightColor: Colors.secondaryColor
+    // borderTopColor: Colors.primaryColor,
+    // borderRightColor: Colors.primaryColor,
+    // borderBottomColor: Colors.primaryColor,
+
+  },
+
+})

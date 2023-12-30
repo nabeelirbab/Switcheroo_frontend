@@ -177,7 +177,15 @@ const Additem = props => {
 
         setLoading(true);
 
-        const trimmedValue = value.slice(1);
+
+        let trimmedValue = 0
+        if (value.toString().includes('$')) {
+          trimmedValue = value.slice(1);
+
+        }
+        else {
+          trimmedValue = value
+        }
 
         console.log({
           askingPrice: parseFloat(trimmedValue),

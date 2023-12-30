@@ -415,10 +415,13 @@ const SettingDetail = props => {
             <TextInput
               value={Distance > 0 ? Distance.toString() : Distance}
               onChangeText={number => {
-                number = number.replace(/[^0-9]/g, ''); // Remove non-numeric characters
-                if (number >= 0 && number <= 500) { setDistance(number) }
+                // number = number.replace(/[^0-9]/g, ' ');
+                if (number >= 0 && number <= 250) { setDistance(number) }
                 if (number.length == 0) {
-                  setDistance('0')
+                  setDistance('')
+                }
+                else if (number > 250) {
+                  setDistance(250)
                 }
               }}
               style={styles.input}
@@ -434,7 +437,7 @@ const SettingDetail = props => {
               minimumTrackTintColor={Colors.primaryColor}
               maximumTrackTintColor={`${Colors.graytext}20`}
               minimumValue={0}
-              maximumValue={500}
+              maximumValue={250}
               thumbTintColor={Colors.primaryColor}
             />
           </View>
@@ -447,7 +450,7 @@ const SettingDetail = props => {
                 fontSize: 16,
                 fontFamily: Fonts.FontsBold,
               }}>
-              {`${parseInt(Distance)} Miles away`}
+              {`${Distance <= 0 ? 0 : parseInt(Distance)} Miles away`}
             </ResponsiveText>
           </ResponsiveText>
         </View>
