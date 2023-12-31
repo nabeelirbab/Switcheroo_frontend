@@ -133,7 +133,7 @@ export const styles = StyleSheet.create({
     nametxt: {
         fontSize: 14,
         fontFamily: Fonts.Fontsmedeum,
-        color: Colors.black,
+        color: Colors.graytext,
         // backgroundColor: "red",
         // width: wp(32)
     },

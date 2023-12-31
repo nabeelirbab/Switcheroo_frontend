@@ -137,7 +137,7 @@ const Message = (props) => {
               />
 
               <ResponsiveText numberOfLines={1} style={styles.sourcetitle}>
-                {item?.sourceItem[0]?.title}heolloo jlajljlk jalkjldkjlk jaflkdjl
+                {item?.sourceItem[0]?.title}
               </ResponsiveText>
 
 
@@ -146,7 +146,7 @@ const Message = (props) => {
               </ResponsiveText> */}
             </View>
             <ResponsiveText style={styles.nametxt}>
-              {`  (${item?.targetUser[0].firstName})`}
+              {`  (@${item?.targetUser[0].firstName})`}
             </ResponsiveText>
           </View>
 
