@@ -3,14 +3,19 @@ import {
   MATCHINGITEM,
   ISFIRSTINSTALL,
   MESSAGECOUNT,
-  NOTIFICATIONCOUNT
+  NOTIFICATIONCOUNT,
+  REMEMBERME
 } from '../types';
 const initState = {
   totalScore: 0,
   matchingItems: null,
   firstinstall: true,
   notificationCount: 0,
-  messageCount: 0
+  messageCount: 0,
+  remember: {
+    email: '',
+    password: ''
+  }
 
 };
 const userdataReducer = (state = initState, action) => {
@@ -35,6 +40,11 @@ const userdataReducer = (state = initState, action) => {
       return {
         ...state,
         messageCount: action.payload,
+      };
+    case REMEMBERME:
+      return {
+        ...state,
+        remember: action.payload,
       };
     case NOTIFICATIONCOUNT:
       return {

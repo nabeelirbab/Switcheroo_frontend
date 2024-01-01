@@ -39,6 +39,8 @@ const Images = {
   calander: require('../Images/calander.png'),
   activeCheck: require('../Images/activeCheck.png'),
   unactivecheck: require('../Images/unactivecheck.png'),
+  checkbox: require('../Images/checkbox.png'),
+  uncheckbox: require('../Images/uncheckbox.png'),
 
 };
 export default Images;

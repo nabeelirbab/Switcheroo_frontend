@@ -14,7 +14,7 @@ import { newEvents } from './Src/CustomEvents/CustomEvents';
 
 // Initialize Apollo Client
 const hostUrl = 'http://13.50.221.83/';
-// const hostUrl = 'http://172.16.0.50:5002/';
+// const hostUrl = 'http://172.17.240.1:5002/';
 
 const link = createHttpLink({
   uri: hostUrl,

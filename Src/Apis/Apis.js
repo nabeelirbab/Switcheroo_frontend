@@ -111,6 +111,52 @@ export const getChatlist = () => {
     });
 };
 
+export const getMyallItems = () => {
+  const graphqlQuerychat = {
+    query: `
+     query Me {
+    me {
+      avatarUrl
+      distance
+      email
+      firstName
+      id
+      username
+      items {
+        askingPrice
+        categories
+        createdByUserId
+        description
+        flexibilityRange
+        id
+        imageUrls
+        isFlexible
+        isHidden
+        isSwapOnly
+        latitude
+        longitude
+        mainImageUrl
+        title
+      }
+      lastName
+    }
+  }
+    `
+  };
+
+  return axios.post(GRAPHQL_ENDPOINT, graphqlQuerychat)
+    .then(response => {
+      // Handle the response data
+      console.log('Response:', response.data);
+      return response.data;  // You can return the data here for further processing
+    })
+    .catch(error => {
+      // Handle errors
+      console.error('Error:', error);
+      throw error;  // Rethrow the error for handling it where the function is called
+    });
+};
+
 
 
 export const getallchMessages = (offerId) => {

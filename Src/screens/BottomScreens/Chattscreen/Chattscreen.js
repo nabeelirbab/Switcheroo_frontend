@@ -86,7 +86,7 @@ const CHattscreen = (props) => {
     const [messages, setMessages] = useState([]);
     const connection = new HubConnectionBuilder()
         .withUrl('http://13.50.221.83/chatHub')
-        // .withUrl('http://172.16.0.50:5002/chatHub')
+        // .withUrl('http://172.17.240.1:5002/chatHub')
 
         .build();
     useEffect(() => {

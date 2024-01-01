@@ -3,7 +3,8 @@ import {
   MATCHINGITEM,
   ISFIRSTINSTALL,
   NOTIFICATIONCOUNT,
-  MESSAGECOUNT
+  MESSAGECOUNT,
+  REMEMBERME
 } from '../types';
 
 export const savePoints = data => {
@@ -18,6 +19,15 @@ export const Savematchingitem = data => {
   console.log('datadatadata', data);
   return {
     type: MATCHINGITEM,
+    payload: data,
+  };
+};
+
+export const saveUserCradential = data => {
+
+  console.log('datadatadata', data);
+  return {
+    type: REMEMBERME,
     payload: data,
   };
 };

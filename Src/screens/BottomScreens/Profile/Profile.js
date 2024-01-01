@@ -38,7 +38,7 @@ import {
   widthPercentageToDP as wp,
 } from '../../../components/Responsiveui';
 import FastImage from 'react-native-fast-image';
-import { getAddressFromLatLng } from '../../../Apis/Apis';
+import { getAddressFromLatLng, getMyallItems } from '../../../Apis/Apis';
 import CustomModal from '../../../components/CustomModal';
 import { saveisFirstinstall } from '../../../redux/actions/userDataAction';
 import { useDispatch } from 'react-redux';
@@ -100,8 +100,22 @@ const Profile = props => {
   };
 
   useEffect(() => {
-    getMyitem();
-  }, [myItemsData, getoferdata, useIsFocused()]);
+    getMylistofitem()
+  }, [useIsFocused()]);
+  const getMylistofitem = async () => {
+    try {
+
+      const response = await getMyallItems()
+
+      console.log('responseresponseresponseresponseresponse', response.data.me.items)
+      setmyitems(response?.data?.me?.items);
+
+
+
+    } catch (error) {
+
+    }
+  }
 
   const {
     data: mydata,
@@ -145,12 +159,8 @@ const Profile = props => {
     console.log('mydatamydatamydatamydata', mydata);
 
     fetchData();
-    console.log('myItemsData', myItemsData?.me?.items);
-    if (!myItemsLoading) {
-      setmyitems(myItemsData?.me?.items);
-    }
-    console.log('myItemsLoading', myItemsLoading);
-    console.log('myItemsDataError', myItemsDataError);
+
+
   });
 
   const gap = wp(2);
@@ -165,9 +175,9 @@ const Profile = props => {
         },
       });
 
-      clearApolloCache(client);
+
       setTimeout(() => {
-        getMyitem();
+        getMylistofitem();
       }, 1000);
 
       console.log(
@@ -176,11 +186,11 @@ const Profile = props => {
       );
 
       if (archiveItemResponse.data) {
-        await getMyitem();
+        getMylistofitem();
         setItemmodal(false);
         setwarningModal(false);
       } else {
-        await getMyitem();
+        getMylistofitem()
         setItemmodal(false);
         setwarningModal(false);
       }
@@ -192,7 +202,7 @@ const Profile = props => {
   };
   useEffect(() => {
     getCurrentLocation();
-    clearApolloCache(client);
+
   }, [useIsFocused(), myPersnolData]);
 
   const getCurrentLocation = async () => {

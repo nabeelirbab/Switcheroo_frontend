@@ -23,7 +23,6 @@ import Swiper from 'react-native-deck-swiper';
 import axios from 'axios';
 
 import {
-  GetAllMyitem,
   Logoutacountmutaion,
   UpdateUserFcm,
   clearApolloCache,
@@ -56,7 +55,7 @@ import {
   RESULTS,
   openSettings,
 } from "react-native-permissions";
-import { getCategory } from '../../../Apis/Apis';
+import { getCategory, getMyallItems } from '../../../Apis/Apis';
 
 
 
@@ -109,14 +108,7 @@ const Home = props => {
 
 
   };
-  const {
-    getMyitem,
-    loading: MyitemLoading,
-    data: myitemdata,
-    error: myitemError,
-  } = GetAllMyitem({
-    fetchPolicy: 'network-only',
-  });
+
 
   const [createOffer] = useCreateOfferMutation();
   const [createCashOffer] = useCreateCashOfferMutation();
@@ -124,6 +116,7 @@ const Home = props => {
   const [updateFcm] = UpdateUserFcm();
 
   useEffect(() => {
+
     getCategory().then(res => {
 
       console.log('resoponseeeee', res)
@@ -196,24 +189,33 @@ const Home = props => {
 
 
   useEffect(() => {
-    // SuccessToast({
-    //   title: 'Congratulation',
-    //   text: 'Request sent successfully ',
-    // });
-    setselectedItem(checkSelectedTitle ? checkSelectedTitle : {})
-    console.log(myitemdata, 'myitemdataaaa===>>>>>>>', myItemData?.me?.items?.length);
-    setmyItemData(myitemdata ?? []);
-
-    if (myItemData?.me?.items?.length == 0) {
-      setselectedItem({ title: '' })
-      dispatch(Savematchingitem(null));
-    }
+    setselectedItem(checkSelectedTitle)
     GetItemsFilter(selectedItem);
 
-
-  }, [myitemdata, useIsFocused()]);
+    getMylistofitem()
+  }, [useIsFocused()]);
 
   // Logout handle
+
+
+  const getMylistofitem = async () => {
+    try {
+
+      const response = await getMyallItems()
+
+      console.log('responseresponseresponseresponseresponse', response.data.me.items)
+      setmyItemData(response?.data?.me?.items);
+
+      if (response?.data?.me?.items.length == 0) {
+        setselectedItem({ title: '' })
+        dispatch(Savematchingitem(null));
+      }
+
+
+    } catch (error) {
+
+    }
+  }
 
   const logoutPress = async () => {
     await signOut();
@@ -221,7 +223,7 @@ const Home = props => {
     dispatch(Savematchingitem(null));
     await AsyncStorage.clear();
 
-    setselectedItem('');
+
     setSwipeData([]);
     clearApolloCache(client);
     dispatch(saveisFirstinstall(true));
@@ -378,24 +380,8 @@ const Home = props => {
     }
   };
 
-  useEffect(() => {
-    getAllmyProdunt();
-    // getallItemForMatching();
-  }, [props.navigation, selectedItem, queryExecuted, useIsFocused()]);
 
-  const getAllmyProdunt = async () => {
-    try {
-      await getMyitem();
-      console.log(
-        'MyitemLoading, myitemdata ,myitemError',
-        MyitemLoading,
-        myitemdata,
-        myitemError,
-      );
-    } catch (error) {
-      console.log('error of getMyitem', error);
-    }
-  };
+
 
   const GetItemsFilter = async itemid => {
     try {
@@ -458,7 +444,7 @@ const Home = props => {
         console.log('====================================');
         axios
           .post('http://13.50.221.83/', { query, variables })
-          // .post('http://172.16.0.50:5002/', { query, variables })
+          // .post('http://172.17.240.1:5002/', { query, variables })
           .then(response => {
             console.log(
               'Response data:',
@@ -537,12 +523,12 @@ const Home = props => {
           btnContainer={styles.rowButton}
           titleStyle={{ marginTop: 3 }}
           onPress={() => {
-            getAllmyProdunt(), setchosemodal(!chosemodal);
+            setchosemodal(!chosemodal);
           }}
         />
         <View style={styles.texttitleview}>
           <ResponsiveText numberOfLines={1} style={styles.choosebtntxt}>
-            {selectedItem?.title ?? ' '}
+            {selectedItem?.title ? selectedItem?.title : ' '}
           </ResponsiveText>
         </View>
 
@@ -659,9 +645,10 @@ const Home = props => {
                 setSwipeData([]);
               }
             }}
+
             onSwipedAll={() => {
               setSwipeData([]);
-              getAllmyProdunt();
+              getMylistofitem()
               // GetItemsFilter(selectedItem);
             }}
             cardIndex={swiperIndex}
@@ -720,7 +707,7 @@ const Home = props => {
             </ResponsiveText>
             <FlatList
               horizontal={true}
-              data={myItemData?.me?.items}
+              data={myItemData}
               renderItem={renderItem}
               keyExtractor={(item, index) => item.id}
               showsHorizontalScrollIndicator={false}

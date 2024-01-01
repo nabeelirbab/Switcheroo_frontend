@@ -3,6 +3,7 @@ import { Platform, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import Colors from '../../theme/colors';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from '../../components/Responsiveui';
+import { Fonts } from '../../theme/Fonts';
 
 
 export const styles = StyleSheet.create({
@@ -73,6 +74,23 @@ export const styles = StyleSheet.create({
         fontWeight: '600',
         marginBottom: hp(3),
         alignSelf: 'flex-end'
+    },
+    remembertext: {
+        color: Colors.btncolor,
+        fontSize: 16,
+        fontFamily: Fonts.Fontsregular,
+        marginTop: hp(0.3)
+    },
+    remembermemain: {
+        flexDirection: 'row',
+        alignItems: "center",
+        justifyContent: 'flex-start',
+        marginTop: hp(1.5)
+    },
+    checkbox: {
+        width: wp(5),
+        height: wp(5),
+        marginRight: wp(0.2)
     },
     ortext: {
         alignSelf: 'center',

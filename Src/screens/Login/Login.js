@@ -14,17 +14,23 @@ import ResponsiveText from '../../components/ResponsiveText';
 import { useSignInMutation } from '../../Graphql/Graphql';
 import ErrorModal from '../../components/ErrorModal';
 import { StackActions } from '@react-navigation/native';
+import { saveUserCradential } from '../../redux/actions/userDataAction';
+import { useDispatch, useSelector } from 'react-redux';
 
 const Login = props => {
   const [signInMutation, { loading }] = useSignInMutation();
+  const state = useSelector(state => state.userdataReducer.remember)
 
+  console.log('statestatestatestatestatestate', state);
 
+  const dispatch = useDispatch();
   // const [signIn, {loading}] = useSignInMutation();
 
-  const [emailaddress, setemailaddress] = useState('');
-  const [password, setpassword] = useState('');
+  const [emailaddress, setemailaddress] = useState(state?.email);
+  const [password, setpassword] = useState(state?.password);
   const [errorModal, seterrorModal] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
+  const [Remember, setRemember] = useState(state?.email ? true : false);
   const [errorMessage, seterrorMessage] = useState('');
 
 
@@ -57,6 +63,28 @@ const Login = props => {
         ) {
           throw new Error('Log in failed');
         } else {
+
+          if (Remember) {
+
+            const objectdata = {
+              email: emailaddress.trim(),
+              password: password.trim(),
+            }
+
+
+            dispatch(saveUserCradential(objectdata));
+          }
+
+          else {
+
+            const objectdata = {
+              email: '',
+              password: ''
+            }
+
+
+            dispatch(saveUserCradential(objectdata));
+          }
           props.navigation.dispatch(StackActions.replace('MainStack'))
           //Success response
           // props.navigation.replace('TabBarNav',{
@@ -145,6 +173,15 @@ const Login = props => {
 
           />
         </View>
+        <TouchableOpacity style={styles.remembermemain} activeOpacity={0.8} onPress={() => setRemember(!Remember)}>
+          <Image
+            source={Remember ? Images.checkbox : Images.uncheckbox}
+            style={styles.checkbox}
+          />
+          <ResponsiveText style={styles.remembertext}>
+            {'Remember me!'}
+          </ResponsiveText>
+        </TouchableOpacity>
 
         <View style={styles.brnview}>
           <TouchableOpacity onPress={() => props.navigation.navigate('ForgotPassword')}>
